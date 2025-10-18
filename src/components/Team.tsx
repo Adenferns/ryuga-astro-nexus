@@ -1,36 +1,47 @@
 import { User, Github, Linkedin, Mail } from "lucide-react";
+import YashPhoto from "../assets/Teamphotos/yash.jpeg";
+import AdenPhoto from "../assets/Teamphotos/aden.jpeg";
+import AlisterPhoto from "../assets/Teamphotos/alister.jpeg";
+import SnidonPhoto from "../assets/Teamphotos/snidon.jpeg";
 
 const team = [
   {
     name: "Aden Fernades",
-    role: "Team Lead & Aerospace Engineer",
-    bio: "Specializing in flight dynamics and control systems",
+    role: "Deeplearning and AI Engineer",
+    bio: "Deep learning for computer vision and navigation",
+    photo: AdenPhoto,
+    Github: "https://github.com/Adenferns",
+    Linkedin: "https://www.linkedin.com/in/adenfernandes6",
+    email: "mailto:adenfernandes6@gmail.com",
   },
   {
     name: "Yash Shaw",
-    role: "Robotics Lead",
+    role: "Aerospace and UAV Engineer",
     bio: "Expert in autonomous systems and sensor fusion",
+    photo: YashPhoto,
+    Github: "https://github.com/INFINIX2004",
+    Linkedin: "https://www.linkedin.com/in/yash-shaw-607188250/",
+    email: "mailto:yg.shaw2004@gmail.com",
   },
   {
     name: "Alister Fernandes",
-    role: "AI & Machine Learning",
-    bio: "Deep learning for computer vision and navigation",
+    role: "Robotics Lead",
+    bio: "PCB design and embedded systems development",
+    photo: AlisterPhoto,
+    Github: "https://github.com/INFINIX2004",
+    Linkedin: "https://www.linkedin.com/in/alister-fernandes-4a7239317",
+    email: "mailto:alisterbhp@gmail.com",
   },
   {
     name: "Snidon Andrade",
-    role: "Electronics Engineer",
-    bio: "PCB design and embedded systems development",
-  },
-  {
-    name: "David Park",
-    role: "Software Architect",
+    role: "Software Engineer",
     bio: "Full-stack development and system integration",
+    photo:SnidonPhoto,
+    Github: "https://github.com/Snidon06",
+    Linkedin: "https://www.linkedin.com/in/snidon-andrade-90627a330",
+    email: "mailto:snidonandrade06@gmail.com",
   },
-  {
-    name: "Lisa Wang",
-    role: "Project Manager",
-    bio: "Coordinating teams and ensuring timely deliverables",
-  },
+  
 ];
 
 const Team = () => {
@@ -52,8 +63,12 @@ const Team = () => {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex flex-col items-center text-center">
-                <div className="w-24 h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                  <User className="h-12 w-12 text-primary" />
+                    <div className="w-32 h-32 rounded-full overflow-hidden mb-4 group-hover:ring-2 group-hover:ring-primary/30 transition-all">
+                    <img
+                        src={member.photo}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
                 </div>
                 
                 <h3 className="text-xl font-bold mb-1">{member.name}</h3>
@@ -61,16 +76,31 @@ const Team = () => {
                 <p className="text-muted-foreground text-sm mb-4">{member.bio}</p>
 
                 <div className="flex gap-3">
-                  <button className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
-                    <Github className="h-4 w-4" />
-                  </button>
-                  <button className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
-                    <Linkedin className="h-4 w-4" />
-                  </button>
-                  <button className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors">
-                    <Mail className="h-4 w-4" />
-                  </button>
-                </div>
+                <a
+                  href={member.Github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+
+                <a
+                  href={member.Linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
+
+                <a
+                  href={`mailto:${member.email}`}
+                  className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
+              </div>
               </div>
             </div>
           ))}
