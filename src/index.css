@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 220 40% 4%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 35% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 35% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 189 94% 43%;
+    --primary-foreground: 220 40% 4%;
+
+    --secondary: 220 30% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 25% 20%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 189 94% 43%;
+    --accent-foreground: 220 40% 4%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 25% 20%;
+    --input: 220 25% 20%;
+    --ring: 189 94% 43%;
+
+    --radius: 0.75rem;
+
+    /* Aerospace-specific tokens */
+    --space-dark: 220 45% 6%;
+    --space-darker: 220 50% 3%;
+    --glow-cyan: 189 94% 43%;
+    --glow-blue: 217 91% 60%;
+    --stellar-white: 210 40% 98%;
+    
+    /* Gradients */
+    --gradient-space: linear-gradient(135deg, hsl(220 45% 6%), hsl(220 50% 3%));
+    --gradient-glow: linear-gradient(135deg, hsl(189 94% 43%), hsl(217 91% 60%));
+    --gradient-card: linear-gradient(135deg, hsl(220 35% 8% / 0.6), hsl(220 30% 12% / 0.4));
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
