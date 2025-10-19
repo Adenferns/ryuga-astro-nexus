@@ -38,7 +38,7 @@ const About = () => {
             </div>
             <h3 className="text-2xl font-bold mb-4">Key Achievements</h3>
             <p className="text-muted-foreground">
-              8 national awards in robotics competitions, successful deployment of 10+ drone systems, published research in autonomous navigation, and partnerships with leading aerospace companies.
+              8 awards in robotics competitions, successful deployment of 6+ drone systems, published research in autonomous navigation, and partnerships with leading aerospace companies.
             </p>
           </div>
         </div>

@@ -2,28 +2,34 @@ import { Calendar, Trophy, BookOpen } from "lucide-react";
 
 const news = [
   {
-    date: "March 15, 2024",
-    title: "First Place at National Robotics Championship",
-    description: "Our autonomous swarm robotics team secured the top position competing against 50+ universities.",
+    date: "September 25th, 2025",
+    title: "Goa Innovtion Challenge",
+    description: "Secured in top 30 rank teams in Goa Innovation Challenge Organised by  Department of IT and Communivation Cell Goa",
     icon: Trophy,
   },
   {
-    date: "February 28, 2024",
-    title: "Workshop: Introduction to Drone Programming",
-    description: "Successfully conducted a 3-day workshop attended by 100+ students on autonomous drone development.",
-    icon: BookOpen,
-  },
-  {
-    date: "February 10, 2024",
-    title: "CubeSat Project Launch Approval",
-    description: "Received approval for our CubeSat mission to study atmospheric conditions in low Earth orbit.",
+    date: "August 7th, 2025",
+    title: "Working Under Center For Drone Application(CDA) @IIT GOA,Ponda,Goa",
+    description: "Developing and Researching VIO,VSLAM,ROS and other algorithms in Drones",
     icon: Calendar,
   },
   {
-    date: "January 20, 2024",
-    title: "Published Research Paper on AI Navigation",
-    description: "Our research on deep learning-based obstacle avoidance was published in IEEE Robotics Conference.",
+    date: "June 20th, 2025",
+    title: "Workshop: Introduction to Drone Programming",
+    description: "Successfully conducted a workshop attended by 60+ students on autonomous drone development.",
     icon: BookOpen,
+  },
+  {
+    date: "March 15th, 2025",
+    title: "Presented At Inex ",
+    description: "Presented our Project at International Innovation & Invention Expo (INEX)",
+    icon: Calendar,
+  },
+  {
+    date: "January 20, 2025",
+    title: "Praticipated At Ideas 2025",
+    description: "Secured IN top 20 Team team in Collge Level Project Competition",
+    icon: Trophy,
   },
 ];
 
