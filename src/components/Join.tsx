@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -5,37 +6,61 @@ import { useToast } from "@/hooks/use-toast";
 import { Users, Code, Wrench, Rocket } from "lucide-react";
 
 const positions = [
-  {
-    icon: Code,
-    title: "Software Developer",
-    description: "Build control systems and AI algorithms",
-  },
-  {
-    icon: Wrench,
-    title: "Hardware Engineer",
-    description: "Design and fabricate mechanical systems",
-  },
-  {
-    icon: Rocket,
-    title: "Aerospace Engineer",
-    description: "Work on propulsion and flight dynamics",
-  },
-  {
-    icon: Users,
-    title: "Project Manager",
-    description: "Coordinate teams and manage timelines",
-  },
+  { icon: Code, title: "Software Developer", description: "Build control systems and AI algorithms" },
+  { icon: Wrench, title: "Hardware Engineer", description: "Design and fabricate mechanical systems" },
+  { icon: Rocket, title: "Aerospace Engineer", description: "Work on propulsion and flight dynamics" },
+  { icon: Users, title: "Project Manager", description: "Coordinate teams and manage timelines" },
 ];
 
 const Join = () => {
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // State for form fields
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [institution, setInstitution] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Application Submitted!",
-      description: "We'll review your application and get back to you soon.",
-    });
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:5000/api/applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, institution, message }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast({
+          title: "Application Submitted!",
+          description: data.message,
+        });
+
+        // Reset form
+        setName("");
+        setEmail("");
+        setInstitution("");
+        setMessage("");
+      } else {
+        toast({
+          title: "Submission Failed",
+          description: data.message || "Please try again.",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast({
+        title: "Server Error",
+        description: "Could not submit your application. Try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -78,36 +103,48 @@ const Join = () => {
             <h3 className="text-2xl font-bold mb-6">Apply Now</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Input 
-                  placeholder="Full Name" 
-                  required 
+                <Input
+                  placeholder="Full Name"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   className="bg-secondary/50 border-border"
                 />
               </div>
               <div>
-                <Input 
-                  type="email" 
-                  placeholder="Email Address" 
-                  required 
+                <Input
+                  type="email"
+                  placeholder="Email Address"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-secondary/50 border-border"
                 />
               </div>
               <div>
-                <Input 
-                  placeholder="University / Institution" 
-                  required 
+                <Input
+                  placeholder="University / Institution"
+                  required
+                  value={institution}
+                  onChange={(e) => setInstitution(e.target.value)}
                   className="bg-secondary/50 border-border"
                 />
               </div>
               <div>
-                <Textarea 
+                <Textarea
                   placeholder="Tell us why you want to join and what skills you bring..."
                   required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   className="bg-secondary/50 border-border min-h-32"
                 />
               </div>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                Submit Application
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary hover:bg-primary/90"
+              >
+                {loading ? "Submitting..." : "Submit Application"}
               </Button>
             </form>
           </div>
