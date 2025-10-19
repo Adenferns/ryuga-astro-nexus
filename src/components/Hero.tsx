@@ -32,7 +32,7 @@ const Hero = () => {
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-          A student-led team pushing the boundaries of aerospace engineering, robotics, and innovation
+          A student-led team pushing the boundaries of aerospace engineering,Drones,UAV, robotics, and innovation
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
