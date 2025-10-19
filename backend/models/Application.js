@@ -11,5 +11,6 @@ const applicationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Explicitly set collection name to match your MongoDB
-export default mongoose.model("Application", applicationSchema, "Application");
+// 👇 Explicitly specify the collection name as 'applications' (lowercase, plural)
+export default mongoose.model("Application", applicationSchema, "applications");
+

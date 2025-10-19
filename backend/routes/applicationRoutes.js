@@ -5,6 +5,7 @@ const router = express.Router();
 
 // POST /api/applications
 router.post("/", async (req, res) => {
+  console.log("Received POST:", req.body);
   try {
     const { name, email, institution, message } = req.body;
 
@@ -20,18 +21,9 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.error("Error saving application:", error);
     res.status(500).json({ success: false, message: "Server error" });
-  }
+  } s
 });
 
-// (Optional) GET route to view all applications
-router.get("/", async (req, res) => {
-  try {
-    const applications = await Application.find();
-    res.json(applications);
-  } catch (error) {
-    console.error("Error fetching applications:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
+
 
 export default router;
