@@ -1,73 +1,32 @@
-# Welcome to your Lovable project
+🚀 Ryuga Aerospace
+Official Website of Ryuga Aerospace Club
 
-## Project info
+Innovation | Robotics | Drones | AI | Aerospace Technology
 
-**URL**: https://lovable.dev/projects/ed78644e-cafb-47a5-8d35-d994ca736e04
+🛰️ About Us
 
-## How can I edit this code?
+Ryuga Aerospace is a student-led innovation team passionate about designing, building, and testing advanced drone systems, autonomous aerial vehicles, and AI-driven aerospace solutions.
+Our goal is to push the boundaries of aerial robotics and make a real-world impact through engineering excellence and creativity.
 
-There are several ways of editing your application.
+🌐 Project Overview
 
-**Use Lovable**
+This website serves as the official online platform for Ryuga Aerospace — built using the MERN (MongoDB, Express.js, React.js, Node.js) stack.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/ed78644e-cafb-47a5-8d35-d994ca736e04) and start prompting.
+It showcases our projects, team members, achievements, and provides a contact form that allows visitors to connect with us directly — all data is securely stored in our MongoDB database.
 
-Changes made via Lovable will be committed automatically to this repo.
+🧩 Features
 
-**Use your preferred IDE**
+🖥️ Interactive Frontend built with React + Tailwind CSS
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+📦 Node.js + Express backend API
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+🧠 MongoDB Database to store project, team, and contact information
 
-Follow these steps:
+🔐 Dynamic Contact Form — sends messages directly to the database
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+⚙️ Responsive Design optimized for all devices
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+💬 Toast Notifications for user feedback
 
-# Step 3: Install the necessary dependencies.
-npm i
+☁️ Deployed Frontend on Netlify (production-ready)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/ed78644e-cafb-47a5-8d35-d994ca736e04) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
