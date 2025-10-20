@@ -1,20 +1,21 @@
-🚀 Ryuga Aerospace
+# 🚀 Ryuga Aerospace
+
 Official Website of Ryuga Aerospace Club
 
 Innovation | Robotics | Drones | AI | Aerospace Technology
 
-🛰️ About Us
+## 🛰️ About Us
 
 Ryuga Aerospace is a student-led innovation team passionate about designing, building, and testing advanced drone systems, autonomous aerial vehicles, and AI-driven aerospace solutions.
 Our goal is to push the boundaries of aerial robotics and make a real-world impact through engineering excellence and creativity.
 
-🌐 Project Overview
+## 🌐 Project Overview
 
 This website serves as the official online platform for Ryuga Aerospace — built using the MERN (MongoDB, Express.js, React.js, Node.js) stack.
 
 It showcases our projects, team members, achievements, and provides a contact form that allows visitors to connect with us directly — all data is securely stored in our MongoDB database.
 
-🧩 Features
+## 🧩 Features
 
 🖥️ Interactive Frontend built with React + Tailwind CSS
 
@@ -29,4 +30,21 @@ It showcases our projects, team members, achievements, and provides a contact fo
 💬 Toast Notifications for user feedback
 
 ☁️ Deployed Frontend on Netlify (production-ready)
+
+
+| Layer        | Technology                                       |
+| ------------ | ------------------------------------------------ |
+| **Frontend** | React.js, TypeScript, Tailwind CSS, Vite         |
+| **Backend**  | Node.js, Express.js                              |
+| **Database** | MongoDB (Mongoose ORM)                           |
+| **Hosting**  | Netlify (Frontend), Render / Localhost (Backend) |
+
+## the webpage is hosted: https://ryuga-aerospace.netlify.app/
+
+
+## 🛠️ MIT License
+
+This project is licensed under the MIT License — free to use and modify with credit to the Ryuga Aerospace team.
+
+
 
