@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import applicationRoutes from "./routes/applicationRoutes.js";
+import contactRoute from "./routes/contactRoute.js";
 
 dotenv.config();
 
@@ -12,9 +13,10 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin: "http://localhost:8086",
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type"],
+    
   })
 );
 
@@ -34,6 +36,9 @@ app.post("/test", (req, res) => {
 
 // Routes
 app.use("/api/applications", applicationRoutes);
+app.use("/api/contact", contactRoute);
+app.get("/ping", (req, res) => res.json({ message: "pong" }));
+
 
 // MongoDB connection
 mongoose

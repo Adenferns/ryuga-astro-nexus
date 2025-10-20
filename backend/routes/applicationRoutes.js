@@ -1,6 +1,7 @@
 import express from "express";
 import Application from "../models/Application.js";
 
+
 const router = express.Router();
 
 // POST /api/applications
@@ -20,10 +21,9 @@ router.post("/", async (req, res) => {
     res.status(201).json({ success: true, message: "Application submitted successfully!" });
   } catch (error) {
     console.error("Error saving application:", error);
-    res.status(500).json({ success: false, message: "Server error" });
-  } s
+    res.status(500).json({ success: false, message: "Server error"});
+  } 
 });
-
 
 
 export default router;
