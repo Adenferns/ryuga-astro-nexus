@@ -6,9 +6,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Users, Code, Wrench, Rocket } from "lucide-react";
 
 const positions = [
-  { icon: Code, title: "Software Developer", description: "Build control systems and AI algorithms" },
+  { icon: Code, title: "Software Developer", description: "Build control systems and Debugging" },
   { icon: Wrench, title: "Hardware Engineer", description: "Design and fabricate mechanical systems" },
-  { icon: Rocket, title: "Aerospace Engineer", description: "Work on propulsion and flight dynamics" },
+  { icon: Rocket, title: "Machine Learning Engineer", description: "Build ML Algorithm" },
   { icon: Users, title: "Project Manager", description: "Coordinate teams and manage timelines" },
 ];
 
@@ -27,7 +27,7 @@ const Join = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5000/api/applications", {
+      const res = await fetch("http://localhost:3000/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, institution, message }),

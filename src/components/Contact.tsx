@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -7,12 +8,52 @@ import { Mail, MapPin, Phone } from "lucide-react";
 const Contact = () => {
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Form state
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message Sent!",
-      description: "We'll get back to you as soon as possible.",
-    });
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:3000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, subject, message }),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        toast({
+          title: "Message Sent!",
+          description: "We'll get back to you as soon as possible.",
+        });
+
+        // Reset form
+        setName("");
+        setEmail("");
+        setSubject("");
+        setMessage("");
+      } else {
+        toast({
+          title: "Failed to Send",
+          description: data.message || "Please try again later.",
+        });
+      }
+    } catch (error) {
+      console.error("Error sending contact form:", error);
+      toast({
+        title: "Server Error",
+        description: "Unable to send message. Try again later.",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -21,7 +62,7 @@ const Contact = () => {
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Have questions or want to collaborate? We'd love to hear from you
+            Have questions or want to collaborate? We'd love to hear from you.
           </p>
         </div>
 
@@ -59,7 +100,9 @@ const Contact = () => {
                 </div>
                 <div>
                   <h4 className="text-lg font-bold mb-1">Location</h4>
-                  <p className="text-muted-foreground">University Innovation Lab<br />123 Campus Drive</p>
+                  <p className="text-muted-foreground">
+                    Anywhere near Stratoshpere
+                  </p>
                 </div>
               </div>
             </div>
@@ -69,37 +112,41 @@ const Contact = () => {
           <div className="p-8 rounded-xl bg-gradient-card backdrop-blur-sm border border-border/50">
             <h3 className="text-2xl font-bold mb-6">Send us a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Input 
-                  placeholder="Your Name" 
-                  required 
-                  className="bg-secondary/50 border-border"
-                />
-              </div>
-              <div>
-                <Input 
-                  type="email" 
-                  placeholder="Your Email" 
-                  required 
-                  className="bg-secondary/50 border-border"
-                />
-              </div>
-              <div>
-                <Input 
-                  placeholder="Subject" 
-                  required 
-                  className="bg-secondary/50 border-border"
-                />
-              </div>
-              <div>
-                <Textarea 
-                  placeholder="Your message..."
-                  required
-                  className="bg-secondary/50 border-border min-h-32"
-                />
-              </div>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90">
-                Send Message
+              <Input
+                placeholder="Your Name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="bg-secondary/50 border-border"
+              />
+              <Input
+                type="email"
+                placeholder="Your Email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-secondary/50 border-border"
+              />
+              <Input
+                placeholder="Subject"
+                required
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                className="bg-secondary/50 border-border"
+              />
+              <Textarea
+                placeholder="Your message..."
+                required
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                className="bg-secondary/50 border-border min-h-32"
+              />
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-primary hover:bg-primary/90"
+              >
+                {loading ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>
