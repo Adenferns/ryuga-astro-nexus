@@ -27,7 +27,7 @@ const Join = () => {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/applications", {
+      const res = await fetch("https://ryuga-astro-nexus-1.onrender.com/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, institution, message }),
