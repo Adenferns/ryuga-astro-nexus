@@ -35,11 +35,12 @@ import img30 from "../assets/Gallery/img30.jpeg";
 const Gallery = () => {
   const galleryItems = [
     img1,img2,img3,img4,img5,img6,img7,img8,img9,img10,
-    img11,img12,img13,img14,img15,img16,img17,img18,img19,img20,img21,img22,img23,img24,img25,img26,img27,img28,img29,img30
+    img11,img12,img13,img14,img15,img16,img17,img18,img19,img20,
+    img21,img22,img23,img24,img25,img26,img27,img28,img29,img30
   ].reverse();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const imagesPerPage = 8;
   const totalPages = Math.ceil(galleryItems.length / imagesPerPage);
@@ -63,8 +64,8 @@ const Gallery = () => {
           </p>
         </div>
 
-        {/* Image Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Responsive Grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {currentImages.map((item, index) => (
             <div
               key={index}
@@ -99,7 +100,7 @@ const Gallery = () => {
         </div>
       </div>
 
-      {/* Image Modal */}
+      {/* Modal */}
       {selectedImage && (
         <div
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
