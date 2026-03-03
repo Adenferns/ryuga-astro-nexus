@@ -48,9 +48,9 @@ const Hero = () => {
             size="lg" 
             variant="secondary"
             className="bg-secondary hover:bg-secondary/80"
-            onClick={() => scrollToSection("join")}
+            onClick={() => scrollToSection("contact")}
           >
-            Join Our Team
+            Contact Us
           </Button>
         </div>
 
