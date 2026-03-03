@@ -11,14 +11,14 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(
-  cors({
-    origin: "http://localhost:8086",
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-Type"],
-    
-  })
-);
+app.use(cors({
+  origin: [
+      "http://localhost:8080",
+      "http://localhost:8086"
+  ],
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
