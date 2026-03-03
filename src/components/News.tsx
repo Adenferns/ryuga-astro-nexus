@@ -50,51 +50,31 @@ const news = [
       "Developing and researching VIO, VSLAM, ROS and other algorithms in drones.",
     icon: Calendar,
   },
-  {
-    date: "June 20th, 2025",
-    title: "Workshop: Introduction to Drone Programming",
-    description:
-      "Successfully conducted a workshop attended by 60+ students on autonomous drone development.",
-    icon: BookOpen,
-  },
-  {
-    date: "March 15th, 2025",
-    title: "Presented At INEX",
-    description:
-      "Presented our project at International Innovation & Invention Expo (INEX).",
-    icon: Calendar,
-  },
-  {
-    date: "January 20, 2025",
-    title: "Participated At Ideas 2025",
-    description:
-      "Secured top 20 team in college-level project competition.",
-    icon: Trophy,
-  },
 ];
 
 const News = () => {
   const [showAll, setShowAll] = useState(false);
-
   const visibleNews = showAll ? news : news.slice(0, 4);
 
   return (
-    <section id="news" className="py-24 bg-space-dark">
+    <section id="news" className="py-16 md:py-24 bg-space-dark">
       <div className="container mx-auto px-4">
 
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        {/* Heading */}
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">
             News & Achievements
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Our journey of innovation and milestones
           </p>
         </div>
 
-        {/* Timeline */}
+        {/* Timeline Container */}
         <div className="relative max-w-5xl mx-auto">
 
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-primary/30 h-full"></div>
+          {/* Vertical Line */}
+          <div className="absolute left-5 md:left-1/2 md:-translate-x-1/2 w-1 bg-primary/30 h-full"></div>
 
           {visibleNews.map((item, index) => {
             const Icon = item.icon;
@@ -103,24 +83,26 @@ const News = () => {
             return (
               <div
                 key={index}
-                className={`relative mb-16 flex ${
-                  isLeft ? "justify-start" : "justify-end"
-                }`}
+                className={`relative mb-12 flex ${
+                  isLeft ? "md:justify-start" : "md:justify-end"
+                } justify-start`}
               >
-                <div className="w-full md:w-5/12 bg-gradient-card border border-border/50 p-6 rounded-xl hover:border-primary/50 transition-all duration-300">
-                  <div className="text-sm text-muted-foreground mb-2">
+                {/* Card */}
+                <div className="ml-12 md:ml-0 w-full md:w-5/12 bg-gradient-card border border-border/50 p-5 rounded-xl hover:border-primary/50 transition-all duration-300">
+                  <div className="text-xs md:text-sm text-muted-foreground mb-2">
                     {item.date}
                   </div>
-                  <h3 className="text-xl font-bold mb-2">
+                  <h3 className="text-base md:text-xl font-bold mb-2">
                     {item.title}
                   </h3>
-                  <p className="text-muted-foreground">
+                  <p className="text-xs md:text-sm text-muted-foreground">
                     {item.description}
                   </p>
                 </div>
 
-                <div className="absolute left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-                  <Icon className="h-5 w-5 text-white" />
+                {/* Icon */}
+                <div className="absolute left-0 md:left-1/2 md:-translate-x-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary flex items-center justify-center">
+                  <Icon className="h-4 w-4 md:h-5 md:w-5 text-white" />
                 </div>
               </div>
             );
@@ -129,10 +111,10 @@ const News = () => {
 
         {/* Show More Button */}
         {news.length > 4 && (
-          <div className="text-center mt-10">
+          <div className="text-center mt-8">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/80 transition"
+              className="px-5 py-2 bg-primary text-white rounded-lg hover:bg-primary/80 transition"
             >
               {showAll ? "Show Less" : "View More"}
             </button>
