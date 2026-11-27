@@ -44,7 +44,7 @@ const Portrait = () => {
 
   return (
     <div
-      className="mx-auto w-[min(80vw,27rem)] [perspective:1200px]"
+      className="mx-auto w-[min(62vw,27rem)] sm:w-[min(80vw,27rem)] [perspective:1200px]"
       onPointerMove={(e) => {
         if (reduce || e.pointerType !== "mouse") return;
         const r = e.currentTarget.getBoundingClientRect();
@@ -83,12 +83,12 @@ const Portrait = () => {
           </div>
         </div>
 
-        <Float className="-left-3 bottom-20 sm:-left-12" delay={0} paused={!onScreen}>
+        <Float className="-bottom-6 left-2 sm:-left-12 sm:bottom-20" delay={0} paused={!onScreen}>
           <p className="label">Building now</p>
           <p className="mt-1 font-display text-xl leading-tight">AEROVISION</p>
           <p className="text-xs text-muted-foreground">Visual-inertial odometry</p>
         </Float>
-        <Float className="-right-2 top-6 sm:-right-14 sm:top-10" delay={0.25} paused={!onScreen}>
+        <Float className="hidden sm:block sm:-right-14 sm:top-10" delay={0.25} paused={!onScreen}>
           <p className="label">Across the stack</p>
           <p className="mt-1 text-sm leading-snug">
             PCB <span className="text-primary">→</span> firmware <span className="text-primary">→</span> software{" "}
@@ -110,7 +110,7 @@ export const Hero = () => {
   return (
     <section ref={ref} id="top" className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28 lg:pt-24">
       <div className="container grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
-        <motion.div style={{ y: textY, opacity: textOpacity }} className="order-2 lg:order-1 lg:col-span-7">
+        <motion.div style={{ y: textY, opacity: textOpacity }} className="order-2 mt-6 lg:order-1 lg:col-span-7 lg:mt-0">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

@@ -45,7 +45,7 @@ const Hero = () => (
         className="glass mb-8 inline-flex items-center gap-3 rounded-full py-1.5 pl-2 pr-4 text-sm transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
       >
         <span className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">New</span>
-        Yash&apos;s portfolio is live
+        Yash’s portfolio is live
         <ArrowUpRight className="h-4 w-4 text-primary" />
       </Link>
       <p className="label mb-8 flex items-center gap-4">
