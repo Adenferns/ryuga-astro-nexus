@@ -67,27 +67,29 @@ const Chapter = ({
   </Reveal>
 );
 
-/* ---------- 1. Stack: each photo slides over the last, which sinks and dims ---------- */
+/* ---------- 1. Stack: each photo fills the window, sinks a little, then the next one pushes over it ---------- */
 
 const StackCard = ({ n, i, total, onOpen }: { n: number; i: number; total: number; onOpen: Open }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.9]);
-  const light = useTransform(scrollYProgress, [0, 1], [1, 0.45]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.3], [0, 36]);
+  const light = useTransform(scrollYProgress, [0, 1], [1, 0.4]);
   const filter = useMotionTemplate`brightness(${light})`;
 
   return (
-    <div ref={ref} className="h-[85svh]">
-      <div className="sticky" style={{ top: `${6 + i * 1.25}rem` }}>
+    // Taller than the screen so the card stays pinned while the next one slides over it.
+    <div ref={ref} className="relative h-[170svh]">
+      <div className="sticky top-0 h-screen">
         <motion.button
           type="button"
           onClick={() => onOpen(photo(n))}
           aria-label={`Open photo ${n}`}
-          style={{ scale, filter }}
-          className="glass relative block w-full origin-top overflow-hidden rounded-3xl p-2"
+          style={{ scale, filter, borderRadius }}
+          className="relative block h-full w-full overflow-hidden"
         >
-          <Frame src={photo(n)} alt="Drone build" className="h-[60svh] rounded-2xl" />
-          <span className="absolute bottom-6 left-7 font-display text-3xl italic tabular-nums drop-shadow">
+          <Frame src={photo(n)} alt="Drone build" className="h-full w-full" />
+          <span className="absolute bottom-8 left-8 font-display text-4xl italic tabular-nums drop-shadow md:left-12 md:text-5xl">
             {pad(i + 1)}
             <span className="text-white/60"> / {pad(total)}</span>
           </span>
@@ -97,40 +99,47 @@ const StackCard = ({ n, i, total, onOpen }: { n: number; i: number; total: numbe
   );
 };
 
-/* ---------- 2. Reveal: the frame opens as the photo scrolls into the centre ---------- */
+/* ---------- 2. Reveal: opens to fill the window, then eases back as it leaves ---------- */
 
 const RevealFrame = ({ n, i, total }: { n: number; i: number; total: number }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "center center"] });
+  // 0 = frame enters at the bottom, 0.5 = it exactly fills the window, 1 = it has left at the top.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const wipe = i % 2 === 1;
   const clipPath = useTransform(
     scrollYProgress,
-    [0, 1],
+    [0, 0.5],
     [
-      wipe ? "inset(0% 100% 0% 0% round 24px)" : "inset(22% 14% 22% 14% round 32px)",
-      "inset(0% 0% 0% 0% round 24px)",
+      wipe ? "inset(0% 100% 0% 0% round 24px)" : "inset(20% 12% 20% 12% round 36px)",
+      "inset(0% 0% 0% 0% round 0px)",
     ],
   );
-  const scale = useTransform(scrollYProgress, [0, 1], [wipe ? 1.2 : 1.35, 1]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.5], [wipe ? 1.2 : 1.3, 1]);
+  const outScale = useTransform(scrollYProgress, [0.5, 1], [1, 0.92]);
+  const light = useTransform(scrollYProgress, [0.5, 1], [1, 0.5]);
+  const filter = useMotionTemplate`brightness(${light})`;
 
   return (
-    <div ref={ref} className="container py-8 md:py-14">
-      <motion.div style={{ clipPath }} className="aspect-[16/10] w-full overflow-hidden">
-        <motion.img
-          src={photo(n)}
-          alt="Team and projects on show"
-          loading="lazy"
-          decoding="async"
-          style={{ scale }}
-          className="h-full w-full object-cover object-[50%_35%]"
-        />
+    <div ref={ref} className="relative h-[100svh] overflow-hidden">
+      <motion.div style={{ scale: outScale, filter }} className="h-full w-full">
+        <motion.div style={{ clipPath }} className="relative h-full w-full overflow-hidden">
+          <motion.img
+            src={photo(n)}
+            alt="Team and projects on show"
+            loading="lazy"
+            decoding="async"
+            style={{ scale: imgScale }}
+            className="h-full w-full object-cover object-[50%_35%]"
+          />
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-8 md:p-12">
+            <span className="label text-white/80">No. {n}</span>
+            <span className="font-display text-3xl italic tabular-nums md:text-4xl">
+              {pad(i + 1)}
+              <span className="text-white/60"> / {pad(total)}</span>
+            </span>
+          </div>
+        </motion.div>
       </motion.div>
-      <p className="label mt-4 flex justify-between">
-        <span>No. {n}</span>
-        <span>
-          {pad(i + 1)} / {pad(total)}
-        </span>
-      </p>
     </div>
   );
 };
@@ -380,7 +389,7 @@ const GalleryPage = () => {
           }
           note="Frames, flight controllers and wiring, one build at a time."
         />
-        <div className="container">
+        <div>
           {STACK.map((n, i) => (
             <StackCard key={n} n={n} i={i} total={STACK.length} onOpen={setOpen} />
           ))}
