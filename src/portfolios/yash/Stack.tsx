@@ -127,7 +127,7 @@ export const Stack = () => {
 
   return (
     <section id="stack" ref={ref} className="relative h-[310svh] md:h-[400svh]">
-      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pt-20">
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pb-4 pt-[4.5rem] md:pt-20">
         <div className="container grid items-center gap-2 lg:grid-cols-2 lg:gap-16">
           <div className="order-2 lg:order-1">
             <Reveal>
@@ -140,7 +140,7 @@ export const Stack = () => {
               </p>
             </Reveal>
 
-            <div className="mt-6 min-h-[15rem] md:mt-10" aria-live="polite">
+            <div className="mt-5 min-h-[13rem] md:mt-10 md:min-h-[15rem]" aria-live="polite">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={layer.key}
@@ -156,7 +156,7 @@ export const Stack = () => {
                   <p className="mt-1 text-muted-foreground">{layer.line}</p>
                   <ul className="mt-4 divide-y divide-white/10 border-y border-white/10">
                     {layer.items.map((it) => (
-                      <li key={it} className="py-2 text-[0.95rem] md:py-2.5">
+                      <li key={it} className="py-1.5 text-sm md:py-2.5 md:text-[0.95rem]">
                         {it}
                       </li>
                     ))}
@@ -167,7 +167,7 @@ export const Stack = () => {
           </div>
 
           <div className="order-1 lg:order-2">
-            <div className="relative mx-auto aspect-square w-[min(68vw,30rem)] [perspective:1500px] lg:w-[min(36vw,32rem)]">
+            <div className="relative mx-auto aspect-square w-[min(54vw,30rem)] [perspective:1500px] sm:w-[min(62vw,30rem)] lg:w-[min(36vw,32rem)]">
               <motion.div
                 aria-hidden
                 style={{ rotateX: 58, rotateZ: spin, transformStyle: "preserve-3d" }}

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 import { Eyebrow, Reveal } from "@/components/Reveal";
-import { spot } from "./kit";
+import { spot } from "./spot";
 
 const approach = [
   ["Practical implementation", "Concepts become working prototypes. I value building systems that solve actual problems."],

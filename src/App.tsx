@@ -1,14 +1,14 @@
-import { useEffect, useRef } from "react";
+import { lazy, Suspense, useEffect, useRef } from "react";
 import { MotionConfig } from "motion/react";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Index from "./pages/Index";
-import Work from "./pages/Work";
-import Crew from "./pages/Crew";
-import CrewMember from "./pages/CrewMember";
-import GalleryPage from "./pages/GalleryPage";
+const Work = lazy(() => import("./pages/Work"));
+const Crew = lazy(() => import("./pages/Crew"));
+const CrewMember = lazy(() => import("./pages/CrewMember"));
+const GalleryPage = lazy(() => import("./pages/GalleryPage"));
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +35,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollManager />
+          <Suspense fallback={null}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/work" element={<Work />} />
@@ -44,6 +45,7 @@ const App = () => (
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
     </MotionConfig>

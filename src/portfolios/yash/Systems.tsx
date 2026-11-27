@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ComponentType } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import { Eyebrow, Reveal } from "@/components/Reveal";
 import { Cams, Home, Integration, Pcb, Vio } from "./illustrations";
-import { spot } from "./kit";
+import { spot } from "./spot";
 
 type Sys = {
   slug: string;

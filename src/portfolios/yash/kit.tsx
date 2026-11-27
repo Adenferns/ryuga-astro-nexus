@@ -1,12 +1,5 @@
-import { useEffect, useState, type PointerEvent, type ReactNode, type RefObject } from "react";
+import { useEffect, useState, type ReactNode, type RefObject } from "react";
 import { animate, motion, useInView, useMotionValue, useReducedMotion, useSpring } from "motion/react";
-
-/** Feeds the `.spot` sheen (see index.css) with the pointer position inside a card. */
-export const spot = (e: PointerEvent<HTMLElement>) => {
-  const r = e.currentTarget.getBoundingClientRect();
-  e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
-  e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-};
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
@@ -99,7 +92,7 @@ export const Lens = ({ boundsRef, size = 150 }: { boundsRef: RefObject<HTMLEleme
       aria-hidden
       data-liquid={liquid || undefined}
       style={{ x: sx, y: sy, width: size, height: size }}
-      className="pf-lens pointer-events-none absolute left-0 top-0 z-10"
+      className="pf-lens pointer-events-none absolute left-0 top-0 z-10 hidden sm:block"
     />
   );
 };
