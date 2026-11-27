@@ -1,7 +1,8 @@
 import { useRef, type ReactNode } from "react";
 import { motion, useInView } from "motion/react";
 import NumberFlow from "@number-flow/react";
-import { ArrowDown } from "lucide-react";
+import { Link } from "react-router-dom";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/drone4.jpg";
 
@@ -32,13 +33,21 @@ const Hero = () => (
     <img
       src={heroImage}
       alt=""
-      fetchPriority="high"
+      {...({ fetchpriority: "high" } as Record<string, string>)}
       className="absolute inset-0 h-full w-full origin-[15%_40%] scale-[1.3] object-cover object-[50%_40%] brightness-[0.6] saturate-[0.7]"
     />
     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/45 to-background/10" />
     <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-background/70 to-transparent" />
 
     <div className="container relative z-10 pb-10 pt-44">
+      <Link
+        to="/crew"
+        className="glass mb-8 inline-flex items-center gap-3 rounded-full py-1.5 pl-2 pr-4 text-sm transition-transform duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
+      >
+        <span className="rounded-full bg-primary px-3 py-1 text-xs font-medium text-primary-foreground">New</span>
+        Yash&apos;s portfolio is live
+        <ArrowUpRight className="h-4 w-4 text-primary" />
+      </Link>
       <p className="label mb-8 flex items-center gap-4">
         <span aria-hidden className="h-px w-10 bg-primary" />
         Ryuga Aerospace — student-led
