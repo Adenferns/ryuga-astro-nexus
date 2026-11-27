@@ -1,110 +1,62 @@
-import { Github, Instagram, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Github, Instagram } from "lucide-react";
 
-const Footer = () => {
-  const scrollToSection = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-  };
+const links = [
+  { to: "/#about", label: "Mission" },
+  { to: "/#team", label: "Crew" },
+  { to: "/work", label: "Work" },
+  { to: "/#contact", label: "Contact" },
+];
 
-  return (
-    <footer className="bg-space-darker border-t border-border/50 py-12">
-      <div className="container mx-auto px-4">
+const iconLink =
+  "inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition-[transform,color,border-color] duration-200 hover:border-primary/50 hover:text-foreground active:scale-[0.97]";
 
-        <div className="grid md:grid-cols-3 gap-8 mb-8 text-center md:text-left">
-
-          {/* About */}
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-lg font-bold mb-4">Ryuga Aerospace</h3>
-            <p className="text-sm text-muted-foreground max-w-xs">
-              Building the future of aerospace technology through student innovation and collaboration.
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-lg font-bold mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => scrollToSection("about")}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  About Us
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("projects")}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Projects
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("team")}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Team
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
-                  Contact
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-lg font-bold mb-4">Connect With Us</h4>
-
-            <div className="flex gap-3 mb-4 justify-center md:justify-start">
-              <a
-                href="https://github.com/Adenferns"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-secondary/50 hover:bg-primary/20 hover:scale-110 transition-all duration-200"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-
-              <a
-                href="https://www.instagram.com/arc_pcce?igsh=czY3cHl6dHA5dnFp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg bg-secondary/50 hover:bg-primary/20 hover:scale-110 transition-all duration-200"
-              >
-                <Instagram className="h-5 w-5" />
-              </a>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm text-muted-foreground justify-center md:justify-start">
-              <Mail className="h-4 w-4" />
-              <a
-                href="mailto:ryuga.aerospace@gmail.com"
-                className="hover:text-primary transition-colors"
-              >
-                ryuga.aerospace@gmail.com
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-        {/* Bottom */}
-        <div className="pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
-          <p>
-            &copy; {new Date().getFullYear()} Ryuga Aerospace. All rights reserved.
-          </p>
-        </div>
-
+const Footer = () => (
+  <footer className="overflow-hidden border-t border-white/10">
+    <div className="container flex flex-col gap-6 py-10 md:flex-row md:items-center md:justify-between">
+      <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2">
+        {links.map((l) => (
+          <Link
+            key={l.to}
+            to={l.to}
+            className="text-sm text-muted-foreground transition-colors duration-200 hover:text-foreground"
+          >
+            {l.label}
+          </Link>
+        ))}
+      </nav>
+      <div className="flex gap-2">
+        <a
+          href="https://github.com/Adenferns"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="GitHub"
+          className={iconLink}
+        >
+          <Github className="h-4 w-4" />
+        </a>
+        <a
+          href="https://www.instagram.com/arc_pcce?igsh=czY3cHl6dHA5dnFp"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Instagram"
+          className={iconLink}
+        >
+          <Instagram className="h-4 w-4" />
+        </a>
       </div>
-    </footer>
-  );
-};
+    </div>
+
+    <p
+      aria-hidden
+      className="select-none whitespace-nowrap text-center font-display text-[26vw] font-normal leading-[0.8] tracking-[-0.04em] text-white/[0.045]"
+    >
+      Ryuga
+    </p>
+    <p className="label container pb-6 text-center">
+      &copy; {new Date().getFullYear()} Ryuga Aerospace
+    </p>
+  </footer>
+);
 
 export default Footer;

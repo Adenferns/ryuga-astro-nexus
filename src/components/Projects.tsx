@@ -1,145 +1,61 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal, SectionHead } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Cpu, Plane, Satellite, Brain } from "lucide-react";
+import { projects } from "@/data/projects";
 
-const categories = ["All", "Drones", "Robotics", "AI", "Space Tech"];
+// A flight-manifest style index rather than a card grid.
+const Projects = () => (
+  <section id="projects" className="scroll-mt-24 py-28 md:py-44">
+    <div className="container">
+      <SectionHead
+        index="iii"
+        label="Projects"
+        title={
+          <>
+            Built, flown, <em className="text-primary">shipped.</em>
+          </>
+        }
+      />
 
-const projects = [
-  {
-    id: 1,
-    title: "Gps Denied Drone",
-    category: "Drones",
-    description:
-      "AI-powered drone system for autonomous navigation in GPS-denied environments with obstacle avoidance.",
-    technologies: ["ROS", "Computer Vision", "Python"],
-    icon: Plane,
-  },
-  {
-    id: 2,
-    title: "Visual Clues Guided Indoor Drone",
-    category: "Drones",
-    description:
-      "Drone capable of navigating indoor environments using visual markers.",
-    technologies: ["Python", "ROS2", "Deep Learning"],
-    icon: Cpu,
-  },
-  {
-    id: 3,
-    title: "Energy Efficient VTOL",
-    category: "Space Tech",
-    description:
-      "Hybrid plane designed for longer endurance and efficient flight.",
-    technologies: ["Embedded C", "PCB", "Data Analysis"],
-    icon: Satellite,
-  },
-  {
-    id: 4,
-    title: "SAR: Search & Rescue Drone",
-    category: "AI",
-    description:
-      "CNN-based drone system for human detection and GPS reporting.",
-    technologies: ["TensorFlow", "PyTorch", "YOLO"],
-    icon: Brain,
-  },
-  {
-    id: 5,
-    title: "Beach Garbage Detection Drone",
-    category: "Drones",
-    description:
-      "Drone designed to detect and classify garbage in coastal regions.",
-    technologies: ["PID", "IMU", "Telemetry"],
-    icon: Plane,
-  },
-  {
-    id: 6,
-    title: "Budget Friendly ESP Drone",
-    category: "Robotics",
-    description:
-      "Affordable WiFi-controlled drone built using ESP microcontrollers.",
-    technologies: ["ROS", "SLAM", "Remote Control"],
-    icon: Cpu,
-  },
-];
-
-const Projects = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const filteredProjects =
-    selectedCategory === "All"
-      ? projects
-      : projects.filter((p) => p.category === selectedCategory);
-
-  return (
-    <section id="projects" className="py-16 md:py-24 bg-space-dark relative">
-      <div className="container mx-auto px-4">
-
-        {/* Heading */}
-        <div className="text-center mb-10 md:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">
-            Our Projects
-          </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
-            Innovative solutions pushing the boundaries of aerospace technology
-          </p>
-
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((category) => (
-              <Button
-                key={category}
-                size="sm"
-                variant={selectedCategory === category ? "default" : "secondary"}
-                onClick={() => setSelectedCategory(category)}
+      <ol className="border-t border-white/10">
+        {projects.map((p, i) => (
+          <li key={p.slug}>
+            <Reveal>
+              <Link
+                to={`/work#${p.slug}`}
+                className="group grid gap-x-10 gap-y-3 border-b border-white/10 py-8 transition-colors duration-300 hover:bg-white/[0.025] md:grid-cols-[3.5rem_minmax(0,1.3fr)_minmax(0,1fr)] md:py-10 lg:grid-cols-[3.5rem_minmax(0,1.3fr)_minmax(0,1fr)_minmax(0,0.8fr)]"
               >
-                {category}
-              </Button>
-            ))}
-          </div>
-        </div>
-
-        {/* Responsive Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredProjects.map((project) => {
-            const Icon = project.icon;
-            return (
-              <div
-                key={project.id}
-                className="group p-5 rounded-xl bg-gradient-card border border-border/50 hover:border-primary/50 transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-3 group-hover:bg-primary/20 transition-colors">
-                  <Icon className="h-6 w-6 text-primary" />
+                <span className="font-display text-2xl italic tabular-nums text-primary md:pt-2">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <p className="label mb-3">{p.category}</p>
+                  <h3 className="font-display text-4xl leading-[1.04] tracking-[-0.02em] md:text-5xl">
+                    {p.title}
+                  </h3>
                 </div>
-
-                <Badge variant="secondary" className="mb-2 text-xs">
-                  {project.category}
-                </Badge>
-
-                <h3 className="text-base md:text-lg font-bold mb-2">
-                  {project.title}
-                </h3>
-
-                <p className="text-muted-foreground mb-3 text-xs md:text-sm">
-                  {project.description}
+                <p className="max-w-md leading-relaxed text-muted-foreground md:pt-7">
+                  {p.description}
                 </p>
-
-                <div className="flex flex-wrap gap-1">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[10px] md:text-xs px-2 py-1 rounded-md bg-secondary/50"
-                    >
-                      {tech}
-                    </span>
+                <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs tracking-wide text-muted-foreground md:col-start-3 lg:col-start-auto lg:justify-end lg:pt-8 lg:text-right">
+                  {p.stack.map((t) => (
+                    <li key={t.name}>{t.name}</li>
                   ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-};
+                </ul>
+              </Link>
+            </Reveal>
+          </li>
+        ))}
+      </ol>
+
+      <Button asChild variant="outline" className="glass mt-10 h-11 border-white/15 bg-transparent px-6 hover:bg-white/5">
+        <Link to="/work">
+          See every project in detail <ArrowUpRight />
+        </Link>
+      </Button>
+    </div>
+  </section>
+);
 
 export default Projects;

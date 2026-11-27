@@ -4,6 +4,8 @@ export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
+  // Gate every hover: style behind (hover: hover) so touch devices never get sticky hovers.
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     container: {
       center: true,
@@ -13,6 +15,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['"Instrument Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
+        display: ['"Instrument Serif"', "Georgia", "serif"],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -95,6 +101,10 @@ export default {
           "0%, 100%": { boxShadow: "0 0 20px hsl(var(--glow-cyan) / 0.5)" },
           "50%": { boxShadow: "0 0 40px hsl(var(--glow-cyan) / 0.8)" },
         },
+        marquee: {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-50%)" },
+        },
         "float": {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-10px)" },
@@ -107,6 +117,7 @@ export default {
         "slide-up": "slide-up 0.6s ease-out",
         "glow": "glow 2s ease-in-out infinite",
         "float": "float 3s ease-in-out infinite",
+        marquee: "marquee 45s linear infinite",
       },
     },
   },

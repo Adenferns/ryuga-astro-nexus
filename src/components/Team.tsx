@@ -1,131 +1,162 @@
 import { Github, Linkedin, Mail } from "lucide-react";
+import { Reveal, SectionHead } from "@/components/Reveal";
 import YashPhoto from "../assets/Teamphotos/yash.jpeg";
 import AdenPhoto from "../assets/Teamphotos/aden.jpeg";
 import AlisterPhoto from "../assets/Teamphotos/alister.jpeg";
 import SnidonPhoto from "../assets/Teamphotos/snidon.jpeg";
 
-const team = [
+type Member = {
+  name: string;
+  role: string;
+  bio: string;
+  photo: string;
+  github?: string;
+  linkedin: string;
+  email: string;
+};
+
+const aden: Member = {
+  name: "Aden Fernandes",
+  role: "Deep Learning & AI Engineer",
+  bio: "Deep learning for computer vision and navigation",
+  photo: AdenPhoto,
+  github: "https://github.com/Adenferns",
+  linkedin: "https://www.linkedin.com/in/adenfernandes6",
+  email: "adenfernandes6@gmail.com",
+};
+const snidon: Member = {
+  name: "Snidon Andrade",
+  role: "Software Engineer",
+  bio: "Full-stack development and system integration",
+  photo: SnidonPhoto,
+  github: "https://github.com/Snidon06",
+  linkedin: "https://www.linkedin.com/in/snidon-andrade-90627a330",
+  email: "snidonandrade06@gmail.com",
+};
+const yash: Member = {
+  name: "Yash Shaw",
+  role: "Aerospace & UAV Engineer",
+  bio: "Expert in autonomous systems and sensor fusion",
+  photo: YashPhoto,
+  github: "https://github.com/INFINIX2004",
+  linkedin: "https://www.linkedin.com/in/yash-shaw-607188250/",
+  email: "yg.shaw2004@gmail.com",
+};
+const alister: Member = {
+  name: "Alister Fernandes",
+  role: "Robotics Lead",
+  bio: "PCB design and embedded systems development",
+  photo: AlisterPhoto,
+  // GitHub omitted: the old link pointed at Yash's account. Add Alister's here.
+  linkedin: "https://www.linkedin.com/in/alister-fernandes-4a7239317",
+  email: "alisterbhp@gmail.com",
+};
+
+// The page is organised by where the crew ships, not by who they are.
+const companies = [
   {
-    name: "Aden Fernades",
-    role: "Deep Learning & AI Engineer",
-    bio: "Deep learning for computer vision and navigation",
-    photo: AdenPhoto,
-    Github: "https://github.com/Adenferns",
-    Linkedin: "https://www.linkedin.com/in/adenfernandes6",
-    email: "adenfernandes6@gmail.com",
+    name: "Endure Technologies",
+    place: "Margao",
+    note: "Expanding into robotics",
+    members: [aden, snidon],
   },
   {
-    name: "Yash Shaw",
-    role: "Aerospace & UAV Engineer",
-    bio: "Expert in autonomous systems and sensor fusion",
-    photo: YashPhoto,
-    Github: "https://github.com/INFINIX2004",
-    Linkedin: "https://www.linkedin.com/in/yash-shaw-607188250/",
-    email: "yg.shaw2004@gmail.com",
+    name: "Savir Power and Automation Pvt Ltd",
+    place: "Verna",
+    note: "Power & automation",
+    members: [yash],
   },
   {
-    name: "Alister Fernandes",
-    role: "Robotics Lead",
-    bio: "PCB design and embedded systems development",
-    photo: AlisterPhoto,
-    Github: "https://github.com/INFINIX2004",
-    Linkedin: "https://www.linkedin.com/in/alister-fernandes-4a7239317",
-    email: "alisterbhp@gmail.com",
-  },
-  {
-    name: "Snidon Andrade",
-    role: "Software Engineer",
-    bio: "Full-stack development and system integration",
-    photo: SnidonPhoto,
-    Github: "https://github.com/Snidon06",
-    Linkedin: "https://www.linkedin.com/in/snidon-andrade-90627a330",
-    email: "snidonandrade06@gmail.com",
+    name: "Delga.ai",
+    place: "San Francisco",
+    note: "Y Combinator-backed",
+    members: [alister],
   },
 ];
 
-const Team = () => {
-  return (
-    <section id="team" className="py-16 md:py-24 relative">
-      <div className="container mx-auto px-4">
+const iconLink =
+  "inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-muted-foreground transition-[transform,color,border-color] duration-200 hover:border-primary/50 hover:text-foreground active:scale-[0.97]";
 
-        {/* Heading */}
-        <div className="text-center mb-12 md:mb-16">
-          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">
-            Meet Our Team
-          </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-            Talented students passionate about aerospace and innovation
-          </p>
-        </div>
+const MemberCard = ({ m }: { m: Member }) => (
+  <article className="glass flex min-w-[17rem] flex-1 gap-4 rounded-3xl p-3">
+    <img
+      src={m.photo}
+      alt={m.name}
+      loading="lazy"
+      decoding="async"
+      className="aspect-[4/5] w-28 shrink-0 rounded-2xl object-cover object-top sm:w-32"
+    />
+    <div className="flex min-w-0 flex-1 flex-col py-1 pr-1">
+      <h3 className="font-display text-2xl leading-tight">{m.name}</h3>
+      <p className="label mt-2">{m.role}</p>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{m.bio}</p>
+      <div className="mt-auto flex gap-1.5 pt-3">
+        {m.github && (
+          <a
+            href={m.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${m.name} on GitHub`}
+            className={iconLink}
+          >
+            <Github className="h-4 w-4" />
+          </a>
+        )}
+        <a
+          href={m.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${m.name} on LinkedIn`}
+          className={iconLink}
+        >
+          <Linkedin className="h-4 w-4" />
+        </a>
+        <a href={`mailto:${m.email}`} aria-label={`Email ${m.name}`} className={iconLink}>
+          <Mail className="h-4 w-4" />
+        </a>
+      </div>
+    </div>
+  </article>
+);
 
-        {/* Responsive Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {team.map((member) => (
-            <div
-              key={member.name}
-              className="group p-5 rounded-xl bg-gradient-card border border-border/50 hover:border-primary/50 transition-all duration-300"
-            >
-              <div className="flex flex-col items-center text-center">
+const Team = () => (
+  <section id="team" className="scroll-mt-24 py-28 md:py-44">
+    <div className="container">
+      <SectionHead
+        index="02"
+        label="Crew"
+        title={
+          <>
+            Four engineers. Three companies. <em className="text-primary">One team.</em>
+          </>
+        }
+      />
 
-                {/* Profile Photo */}
-                <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden mb-4 group-hover:ring-2 group-hover:ring-primary/40 transition-all">
-                  <img
-                    src={member.photo}
-                    alt={member.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Name */}
-                <h3 className="text-base md:text-lg font-bold mb-1">
-                  {member.name}
+      <div className="border-t border-white/10">
+        {companies.map((c) => (
+          <Reveal key={c.name}>
+            <div className="grid gap-8 border-b border-white/10 py-12 lg:grid-cols-12 lg:gap-12 lg:py-16">
+              <div className="lg:col-span-5">
+                <p className="label mb-5 text-primary">Now at</p>
+                <h3 className="font-display text-5xl leading-[1.02] tracking-[-0.02em] md:text-6xl">
+                  {c.name}
                 </h3>
-
-                {/* Role */}
-                <p className="text-primary text-xs md:text-sm mb-2">
-                  {member.role}
+                <p className="label mt-5">
+                  {c.place}
+                  {c.note && <span className="text-foreground"> · {c.note}</span>}
                 </p>
-
-                {/* Bio */}
-                <p className="text-muted-foreground text-xs md:text-sm mb-4">
-                  {member.bio}
-                </p>
-
-                {/* Social Icons */}
-                <div className="flex gap-3">
-                  <a
-                    href={member.Github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
-                  >
-                    <Github className="h-4 w-4" />
-                  </a>
-
-                  <a
-                    href={member.Linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
-                  >
-                    <Linkedin className="h-4 w-4" />
-                  </a>
-
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
-                  >
-                    <Mail className="h-4 w-4" />
-                  </a>
-                </div>
-
+              </div>
+              <div className="flex flex-wrap gap-4 lg:col-span-7">
+                {c.members.map((m) => (
+                  <MemberCard key={m.name} m={m} />
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </Reveal>
+        ))}
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default Team;

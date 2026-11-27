@@ -1,130 +1,114 @@
-import { useState } from "react";
-import { X } from "lucide-react";
+import { useRef, useState } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { SectionHead } from "@/components/Reveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
-import img1 from "../assets/Gallery/img1.jpeg";
-import img2 from "../assets/Gallery/img2.jpeg";
-import img3 from "../assets/Gallery/img3.jpeg";
-import img4 from "../assets/Gallery/img4.jpeg";
-import img5 from "../assets/Gallery/img5.jpeg";
-import img6 from "../assets/Gallery/img6.jpeg";
-import img7 from "../assets/Gallery/img7.jpeg";
-import img8 from "../assets/Gallery/img8.jpeg";
-import img9 from "../assets/Gallery/img9.jpeg";
-import img10 from "../assets/Gallery/img10.jpeg";
-import img11 from "../assets/Gallery/img11.jpeg";
-import img12 from "../assets/Gallery/img12.jpeg";
-import img13 from "../assets/Gallery/img13.jpeg";
-import img14 from "../assets/Gallery/img14.jpeg";
-import img15 from "../assets/Gallery/img15.jpeg";
-import img16 from "../assets/Gallery/img16.jpeg";
-import img17 from "../assets/Gallery/img17.jpeg";
-import img18 from "../assets/Gallery/img18.jpeg";
-import img19 from "../assets/Gallery/img19.jpeg";
-import img20 from "../assets/Gallery/img20.jpeg";
-import img21 from "../assets/Gallery/img21.jpeg";
-import img22 from "../assets/Gallery/img22.jpeg";
-import img23 from "../assets/Gallery/img23.jpeg";
-import img24 from "../assets/Gallery/img24.jpeg";
-import img25 from "../assets/Gallery/img25.jpeg";
-import img26 from "../assets/Gallery/img26.jpeg";
-import img27 from "../assets/Gallery/img27.jpeg";
-import img28 from "../assets/Gallery/img28.jpeg";
-import img29 from "../assets/Gallery/img29.jpeg";
-import img30 from "../assets/Gallery/img30.jpeg";
+// Every img*.jpeg in assets/Gallery, newest (highest number) first. Drop a file in to add a photo.
+const modules = import.meta.glob<string>("../assets/Gallery/*.jpeg", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+const num = (path: string) => Number(path.match(/img(\d+)/)?.[1] ?? 0);
+const images = Object.entries(modules)
+  .sort(([a], [b]) => num(b) - num(a))
+  .map(([, url]) => url);
+
+const INITIAL = 12;
 
 const Gallery = () => {
-  const galleryItems = [
-    img1,img2,img3,img4,img5,img6,img7,img8,img9,img10,
-    img11,img12,img13,img14,img15,img16,img17,img18,img19,img20,
-    img21,img22,img23,img24,img25,img26,img27,img28,img29,img30
-  ].reverse();
+  const isMobile = useIsMobile();
+  const reduce = useReducedMotion();
+  const [showAll, setShowAll] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // Columns drift at different speeds as the section scrolls past — transform only, so it stays on the GPU.
+  const gridRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: gridRef, offset: ["start end", "end start"] });
+  const k = reduce ? 0 : 1;
+  const y0 = useTransform(scrollYProgress, [0, 1], [70 * k, -70 * k]);
+  const y1 = useTransform(scrollYProgress, [0, 1], [-40 * k, 120 * k]);
+  const y2 = useTransform(scrollYProgress, [0, 1], [120 * k, -120 * k]);
+  const ys = [y0, y1, y2];
 
-  const imagesPerPage = 8;
-  const totalPages = Math.ceil(galleryItems.length / imagesPerPage);
-  const startIndex = (currentPage - 1) * imagesPerPage;
-  const currentImages = galleryItems.slice(
-    startIndex,
-    startIndex + imagesPerPage
-  );
+  const cols = isMobile ? 2 : 3;
+  const visible = showAll ? images : images.slice(0, INITIAL);
+  const columns = Array.from({ length: cols }, (_, c) => visible.filter((_, i) => i % cols === c));
 
   return (
-    <section id="gallery" className="py-24 relative">
-      <div className="container mx-auto px-4">
+    <section id="gallery" className="scroll-mt-24 overflow-hidden py-28 md:py-44">
+      <div className="container">
+        <SectionHead
+          index="v"
+          label="Gallery"
+          title={
+            <>
+              Workshops, competitions, <em className="text-muted-foreground">build days.</em>
+            </>
+          }
+        />
 
-        {/* Heading */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Gallery
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Explore our workshops, competitions, and project developments
-          </p>
-        </div>
-
-        {/* Responsive Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {currentImages.map((item, index) => (
-            <div
-              key={index}
-              onClick={() => setSelectedImage(item)}
-              className="group relative aspect-square rounded-xl overflow-hidden cursor-pointer border border-border/50 hover:border-primary/50 transition-all duration-300"
+        <div ref={gridRef} className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
+          {columns.map((col, c) => (
+            <motion.div
+              key={c}
+              style={{ y: ys[c] }}
+              className={`flex flex-col gap-3 md:gap-5 ${c === 1 ? "md:pt-20" : ""}`}
             >
-              <img
-                src={item}
-                alt={`Gallery image ${index + 1}`}
-                loading="lazy"
-                className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
+              {col.map((src) => (
+                <motion.button
+                  key={src}
+                  type="button"
+                  onClick={() => setSelected(src)}
+                  aria-label="Open photo"
+                  initial={{ opacity: 0, scale: 0.96 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+                  className="group block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-[border-color] duration-200 hover:border-primary/40"
+                >
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                  />
+                </motion.button>
+              ))}
+            </motion.div>
           ))}
         </div>
 
-        {/* Pagination */}
-        <div className="flex justify-center mt-10 space-x-2">
-          {[...Array(totalPages)].map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              className={`px-4 py-2 rounded-lg transition ${
-                currentPage === i + 1
-                  ? "bg-primary text-white"
-                  : "bg-muted hover:bg-primary/20"
-              }`}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+        {images.length > INITIAL && (
+          <Button
+            variant="outline"
+            className="glass mt-24 h-11 border-white/15 bg-transparent px-6 hover:bg-white/5"
+            aria-expanded={showAll}
+            onClick={() => setShowAll((v) => !v)}
+          >
+            {showAll ? "Show fewer" : `Show all ${images.length}`}
+          </Button>
+        )}
       </div>
 
-      {/* Modal */}
-      {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedImage(null)}
+      <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
+        <DialogContent
+          aria-describedby={undefined}
+          className="max-w-5xl border-0 bg-transparent p-0 shadow-none sm:rounded-3xl"
         >
-          <div
-            className="relative max-w-5xl w-full"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute -top-10 right-0 text-white"
-              onClick={() => setSelectedImage(null)}
-            >
-              <X size={32} />
-            </button>
-
+          <DialogTitle className="sr-only">Gallery photo</DialogTitle>
+          {selected && (
             <img
-              src={selectedImage}
-              alt="Full view"
-              className="w-full max-h-[80vh] object-contain rounded-xl"
+              src={selected}
+              alt="Ryuga Aerospace gallery photo, enlarged"
+              className="max-h-[85vh] w-full rounded-2xl object-contain"
             />
-          </div>
-        </div>
-      )}
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

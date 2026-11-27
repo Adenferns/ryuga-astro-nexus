@@ -2,67 +2,128 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Ryuga design system — deep midnight, one champagne accent, frosted glass.
+   All colors are HSL triplets so Tailwind opacity modifiers keep working. */
 
 @layer base {
   :root {
-    --background: 220 40% 4%;
-    --foreground: 210 40% 98%;
+    --background: 222 28% 5%;
+    --foreground: 40 20% 94%;
 
-    --card: 220 35% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 222 24% 8%;
+    --card-foreground: 40 20% 94%;
 
-    --popover: 220 35% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 222 24% 9%;
+    --popover-foreground: 40 20% 94%;
 
-    --primary: 189 94% 43%;
-    --primary-foreground: 220 40% 4%;
+    --primary: 40 40% 74%;
+    --primary-foreground: 222 28% 7%;
 
-    --secondary: 220 30% 15%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 222 18% 13%;
+    --secondary-foreground: 40 20% 94%;
 
-    --muted: 220 25% 20%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 222 16% 15%;
+    --muted-foreground: 220 10% 66%;
 
-    --accent: 189 94% 43%;
-    --accent-foreground: 220 40% 4%;
+    --accent: 222 16% 15%;
+    --accent-foreground: 40 20% 94%;
 
     --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 40 20% 94%;
 
-    --border: 220 25% 20%;
-    --input: 220 25% 20%;
-    --ring: 189 94% 43%;
+    --border: 222 16% 18%;
+    --input: 222 16% 20%;
+    --ring: 40 40% 74%;
 
-    --radius: 0.75rem;
+    --radius: 0.875rem;
 
-    /* Aerospace-specific tokens */
-    --space-dark: 220 45% 6%;
-    --space-darker: 220 50% 3%;
-    --glow-cyan: 189 94% 43%;
-    --glow-blue: 217 91% 60%;
-    --stellar-white: 210 40% 98%;
-    
-    /* Gradients */
-    --gradient-space: linear-gradient(135deg, hsl(220 45% 6%), hsl(220 50% 3%));
-    --gradient-glow: linear-gradient(135deg, hsl(189 94% 43%), hsl(217 91% 60%));
-    --gradient-card: linear-gradient(135deg, hsl(220 35% 8% / 0.6), hsl(220 30% 12% / 0.4));
+    /* Legacy aerospace tokens (still referenced by the unused Join section) */
+    --space-dark: 222 28% 7%;
+    --space-darker: 222 28% 4%;
+    --glow-cyan: 40 40% 74%;
+    --glow-blue: 40 40% 74%;
+    --stellar-white: 40 20% 94%;
+    --gradient-space: linear-gradient(135deg, hsl(222 28% 7%), hsl(222 28% 4%));
+    --gradient-glow: linear-gradient(135deg, hsl(40 40% 74%), hsl(40 40% 74%));
+    --gradient-card: linear-gradient(180deg, rgb(255 255 255 / 0.07), rgb(255 255 255 / 0.03));
+
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   }
-}
 
-@layer base {
   * {
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', sans-serif;
-  }
-
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background font-sans text-base leading-relaxed text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga";
+  }
+
+  /* Soft ambient light so the glass has something to refract. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(70rem 45rem at 80% -10%, hsl(40 45% 70% / 0.09), transparent 60%),
+      radial-gradient(60rem 50rem at -5% 45%, hsl(215 60% 45% / 0.14), transparent 60%),
+      radial-gradient(50rem 40rem at 105% 90%, hsl(200 50% 40% / 0.1), transparent 60%);
+  }
+
+  ::selection {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  /* Frosted panel: hairline edge, a bright top lip, deep soft shadow. Radius is set at the call site. */
+  .glass {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.075), rgb(255 255 255 / 0.03));
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.12);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.16),
+      inset 0 -1px 0 rgb(255 255 255 / 0.03),
+      0 30px 60px -30px rgb(0 0 0 / 0.7);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+      background: hsl(222 24% 10%);
+    }
+  }
+
+  .glass-hover {
+    transition:
+      transform 240ms var(--ease-out),
+      border-color 240ms var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .glass-hover:hover {
+      transform: translateY(-3px);
+      border-color: hsl(var(--primary) / 0.4);
+    }
+  }
+
+  /* Small-caps style eyebrow used for every label. */
+  .label {
+    @apply text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-muted-foreground;
   }
 }

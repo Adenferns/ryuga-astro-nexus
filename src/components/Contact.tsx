@@ -1,155 +1,136 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { toast } from "sonner";
+import { Instagram, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Eyebrow, Reveal } from "@/components/Reveal";
+
+const ENDPOINT = "https://ryuga-astro-nexus-1.onrender.com/api/contact";
+
+const fields = [
+  { key: "name", label: "Name", type: "text", autoComplete: "name" },
+  { key: "email", label: "Email", type: "email", autoComplete: "email" },
+  { key: "subject", label: "Subject", type: "text", autoComplete: "off" },
+] as const;
+
+const inputClass = "rounded-xl border-white/10 bg-white/5 focus-visible:ring-offset-0";
 
 const Contact = () => {
-  const { toast } = useToast();
-
-  // Form state
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const set =
+    (key: keyof typeof form) => (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const res = await fetch("https://ryuga-astro-nexus-1.onrender.com/api/contact", {
+      const res = await fetch(ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, subject, message }),
+        body: JSON.stringify(form),
       });
-
       const data = await res.json();
-
       if (data.success) {
-        toast({
-          title: "Message Sent!",
-          description: "We'll get back to you as soon as possible.",
-        });
-
-        // Reset form
-        setName("");
-        setEmail("");
-        setSubject("");
-        setMessage("");
+        toast.success("Message sent", { description: "We'll get back to you soon." });
+        setForm({ name: "", email: "", subject: "", message: "" });
       } else {
-        toast({
-          title: "Failed to Send",
-          description: data.message || "Please try again later.",
-        });
+        toast.error("Couldn't send", { description: data.message || "Please try again later." });
       }
     } catch (error) {
       console.error("Error sending contact form:", error);
-      toast({
-        title: "Server Error",
-        description: "Unable to send message. Try again later.",
-      });
+      toast.error("Server error", { description: "Unable to send message. Try again later." });
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="contact" className="py-24 relative">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Have questions or want to collaborate? We'd love to hear from you.
-          </p>
-        </div>
+    <section id="contact" className="scroll-mt-24 py-28 md:py-44">
+      <div className="container">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
+          <Reveal>
+            <Eyebrow index="vi" label="Contact" />
+            <h2 className="font-display text-6xl font-normal leading-[1] tracking-[-0.03em] md:text-8xl">
+              Let&apos;s build <em className="text-primary">something.</em>
+            </h2>
+            <p className="mt-6 max-w-md text-lg text-muted-foreground">
+              Collaborations, workshops, sponsorships or just a question — we read everything.
+            </p>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <div className="p-6 rounded-xl bg-gradient-card backdrop-blur-sm border border-border/50">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Mail className="h-6 w-6 text-primary" />
+            <ul className="mt-10 space-y-3">
+              <li>
+                <a
+                  href="mailto:ryuga.aerospace@gmail.com"
+                  className="inline-flex items-center gap-3 text-lg transition-colors duration-150 hover:text-primary"
+                >
+                  <Mail className="h-5 w-5 text-primary" /> ryuga.aerospace@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+919145397634"
+                  className="inline-flex items-center gap-3 text-lg transition-colors duration-150 hover:text-primary"
+                >
+                  <Phone className="h-5 w-5 text-primary" /> 91453 97634
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/arc_pcce?igsh=czY3cHl6dHA5dnFp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 text-lg transition-colors duration-150 hover:text-primary"
+                >
+                  <Instagram className="h-5 w-5 text-primary" /> Instagram
+                </a>
+              </li>
+            </ul>
+          </Reveal>
+
+          <Reveal delay={0.08}>
+            <form onSubmit={handleSubmit} className="glass space-y-5 rounded-3xl p-7 md:p-9">
+              {fields.map((f) => (
+                <div key={f.key} className="space-y-2">
+                  <Label htmlFor={f.key} className="label">
+                    {f.label}
+                  </Label>
+                  <Input
+                    id={f.key}
+                    type={f.type}
+                    autoComplete={f.autoComplete}
+                    required
+                    value={form[f.key]}
+                    onChange={set(f.key)}
+                    className={`h-12 ${inputClass}`}
+                  />
                 </div>
-                <div>
-                  <h4 className="text-lg font-bold mb-1">Email</h4>
-                  <p className="text-muted-foreground">ryuga.aerospace@gmail.com</p>
-                </div>
+              ))}
+              <div className="space-y-2">
+                <Label htmlFor="message" className="label">
+                  Message
+                </Label>
+                <Textarea
+                  id="message"
+                  required
+                  value={form.message}
+                  onChange={set("message")}
+                  className={`min-h-36 ${inputClass}`}
+                />
               </div>
-            </div>
-
-            <div className="p-6 rounded-xl bg-gradient-card backdrop-blur-sm border border-border/50">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Phone className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold mb-1">Phone</h4>
-                  <p className="text-muted-foreground">91453 97634</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl bg-gradient-card backdrop-blur-sm border border-border/50">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <h4 className="text-lg font-bold mb-1">Location</h4>
-                  <p className="text-muted-foreground">
-                    Anywhere near Stratoshpere
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="p-8 rounded-xl bg-gradient-card backdrop-blur-sm border border-border/50">
-            <h3 className="text-2xl font-bold mb-6">Send us a Message</h3>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                placeholder="Your Name"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="bg-secondary/50 border-border"
-              />
-              <Input
-                type="email"
-                placeholder="Your Email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-secondary/50 border-border"
-              />
-              <Input
-                placeholder="Subject"
-                required
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
-                className="bg-secondary/50 border-border"
-              />
-              <Textarea
-                placeholder="Your message..."
-                required
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                className="bg-secondary/50 border-border min-h-32"
-              />
               <Button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-primary hover:bg-primary/90"
+                className="h-12 w-full"
               >
-                {loading ? "Sending..." : "Send Message"}
+                {loading ? "Sending…" : "Send message"}
               </Button>
             </form>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
