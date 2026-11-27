@@ -26,3 +26,8 @@ dist-ssr
 # Environment variables
 .env
 backend/.env
+
+# local environment files - never commit secrets
+.env
+.env.*
+!.env.example
