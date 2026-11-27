@@ -6,7 +6,7 @@ const links = [
   { to: "/#team", label: "Crew" },
   { to: "/#projects", label: "Projects" },
   { to: "/work", label: "Work" },
-  { to: "/#gallery", label: "Gallery" },
+  { to: "/gallery", label: "Gallery" },
 ];
 
 const Nav = () => (

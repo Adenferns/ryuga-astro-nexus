@@ -1,116 +1,56 @@
-import { useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { Reveal, SectionHead } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
-import { SectionHead } from "@/components/Reveal";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { photo } from "@/data/gallery";
 
-// Every img*.jpeg in assets/Gallery, newest (highest number) first. Drop a file in to add a photo.
-const modules = import.meta.glob<string>("../assets/Gallery/*.jpeg", {
-  eager: true,
-  query: "?url",
-  import: "default",
-});
-const num = (path: string) => Number(path.match(/img(\d+)/)?.[1] ?? 0);
-const images = Object.entries(modules)
-  .sort(([a], [b]) => num(b) - num(a))
-  .map(([, url]) => url);
+// Home-page teaser: three photos, then on to the full gallery.
+const shots = [
+  { n: 2, className: "md:col-span-2 md:row-span-2", alt: "The team with their drones at an exhibition" },
+  { n: 3, className: "", alt: "Quadcopter on a pink backdrop" },
+  { n: 15, className: "", alt: "Drone on its landing pad" },
+];
 
-const INITIAL = 12;
+const Gallery = () => (
+  <section id="gallery" className="scroll-mt-24 py-28 md:py-44">
+    <div className="container">
+      <SectionHead
+        index="v"
+        label="Gallery"
+        title={
+          <>
+            Frames from <em className="text-muted-foreground">the field.</em>
+          </>
+        }
+      />
 
-const Gallery = () => {
-  const isMobile = useIsMobile();
-  const reduce = useReducedMotion();
-  const [showAll, setShowAll] = useState(false);
-  const [selected, setSelected] = useState<string | null>(null);
-
-  // Columns drift at different speeds as the section scrolls past — transform only, so it stays on the GPU.
-  const gridRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: gridRef, offset: ["start end", "end start"] });
-  const k = reduce ? 0 : 1;
-  const y0 = useTransform(scrollYProgress, [0, 1], [70 * k, -70 * k]);
-  const y1 = useTransform(scrollYProgress, [0, 1], [-40 * k, 120 * k]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [120 * k, -120 * k]);
-  const ys = [y0, y1, y2];
-
-  const cols = isMobile ? 2 : 3;
-  const visible = showAll ? images : images.slice(0, INITIAL);
-  const columns = Array.from({ length: cols }, (_, c) => visible.filter((_, i) => i % cols === c));
-
-  return (
-    <section id="gallery" className="scroll-mt-24 overflow-hidden py-28 md:py-44">
-      <div className="container">
-        <SectionHead
-          index="v"
-          label="Gallery"
-          title={
-            <>
-              Workshops, competitions, <em className="text-muted-foreground">build days.</em>
-            </>
-          }
-        />
-
-        <div ref={gridRef} className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-5">
-          {columns.map((col, c) => (
-            <motion.div
-              key={c}
-              style={{ y: ys[c] }}
-              className={`flex flex-col gap-3 md:gap-5 ${c === 1 ? "md:pt-20" : ""}`}
+      <div className="grid gap-4 md:h-[34rem] md:grid-cols-3 md:grid-rows-2">
+        {shots.map((s, i) => (
+          <Reveal key={s.n} delay={i * 0.08} className={s.className}>
+            <Link
+              to="/gallery"
+              aria-label="Open the gallery"
+              className="group block aspect-[4/3] h-full w-full overflow-hidden rounded-3xl border border-white/10 md:aspect-auto"
             >
-              {col.map((src) => (
-                <motion.button
-                  key={src}
-                  type="button"
-                  onClick={() => setSelected(src)}
-                  aria-label="Open photo"
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-                  className="group block w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 transition-[border-color] duration-200 hover:border-primary/40"
-                >
-                  <img
-                    src={src}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    className="w-full transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  />
-                </motion.button>
-              ))}
-            </motion.div>
-          ))}
-        </div>
-
-        {images.length > INITIAL && (
-          <Button
-            variant="outline"
-            className="glass mt-24 h-11 border-white/15 bg-transparent px-6 hover:bg-white/5"
-            aria-expanded={showAll}
-            onClick={() => setShowAll((v) => !v)}
-          >
-            {showAll ? "Show fewer" : `Show all ${images.length}`}
-          </Button>
-        )}
+              <img
+                src={photo(s.n)}
+                alt={s.alt}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              />
+            </Link>
+          </Reveal>
+        ))}
       </div>
 
-      <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
-        <DialogContent
-          aria-describedby={undefined}
-          className="max-w-5xl border-0 bg-transparent p-0 shadow-none sm:rounded-3xl"
-        >
-          <DialogTitle className="sr-only">Gallery photo</DialogTitle>
-          {selected && (
-            <img
-              src={selected}
-              alt="Ryuga Aerospace gallery photo, enlarged"
-              className="max-h-[85vh] w-full rounded-2xl object-contain"
-            />
-          )}
-        </DialogContent>
-      </Dialog>
-    </section>
-  );
-};
+      <Button asChild size="lg" className="mt-10 h-12 px-7">
+        <Link to="/gallery">
+          Open the gallery <ArrowUpRight />
+        </Link>
+      </Button>
+    </div>
+  </section>
+);
 
 export default Gallery;

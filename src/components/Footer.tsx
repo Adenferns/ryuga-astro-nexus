@@ -5,6 +5,7 @@ const links = [
   { to: "/#about", label: "Mission" },
   { to: "/#team", label: "Crew" },
   { to: "/work", label: "Work" },
+  { to: "/gallery", label: "Gallery" },
   { to: "/#contact", label: "Contact" },
 ];
 
