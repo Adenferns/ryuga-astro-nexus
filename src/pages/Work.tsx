@@ -22,6 +22,27 @@ const ease = [0.23, 1, 0.32, 1] as const;
 
 /* ---------- Project showcase: pinned photo that follows the scroll ---------- */
 
+/** Photo when a project has one; otherwise a typographic cover in the house style. */
+const Visual = ({ project, className }: { project: Project; className: string }) =>
+  project.image ? (
+    <img src={project.image} alt={project.alt ?? ""} loading="lazy" className={`${className} object-cover`} />
+  ) : (
+    <div
+      role="img"
+      aria-label={`${project.title} — ${project.category}`}
+      className={`${className} relative flex flex-col justify-between overflow-hidden pb-16 bg-[#0a0e17] p-7 md:p-10`}
+    >
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-[radial-gradient(70%_60%_at_80%_10%,hsl(var(--primary)/0.2),transparent),linear-gradient(hsl(0_0%_100%/0.04)_1px,transparent_1px),linear-gradient(90deg,hsl(0_0%_100%/0.04)_1px,transparent_1px)] bg-[length:100%_100%,48px_48px,48px_48px]"
+      />
+      <p className="label relative">{project.domain} · {project.category}</p>
+      <p className="relative font-display text-[clamp(2.6rem,6vw,5rem)] leading-[0.98] tracking-[-0.02em]">
+        {project.title}
+      </p>
+    </div>
+  );
+
 const ProjectBlock = ({
   project,
   index,
@@ -44,15 +65,13 @@ const ProjectBlock = ({
       id={project.slug}
       className="flex min-h-[70svh] scroll-mt-28 flex-col justify-center py-12 lg:min-h-[85svh]"
     >
-      <img
-        src={project.image}
-        alt={project.alt}
-        loading="lazy"
-        className="mb-8 aspect-[4/3] w-full rounded-3xl object-cover lg:hidden"
-      />
+      <div className="mb-8 overflow-hidden rounded-3xl lg:hidden">
+        <Visual project={project} className="aspect-[4/3] w-full" />
+      </div>
       <p className="mb-5 flex items-center gap-4">
         <span className="font-display text-2xl italic text-primary">{pad(index + 1)}</span>
-        <span className="label">{project.category}</span>
+        <span className="label">{project.domain} · {project.category}</span>
+        {project.by && <span className="rounded-full border border-white/15 px-3 py-0.5 text-xs text-muted-foreground">by {project.by}</span>}
       </p>
       <h3 className="font-display text-4xl leading-[1.04] tracking-[-0.02em] md:text-6xl">
         {project.title}
@@ -92,15 +111,15 @@ const Showcase = () => {
           <div className="glass relative h-full rounded-[2rem] p-2">
             <div className="relative h-full overflow-hidden rounded-3xl">
               {projects.map((p, i) => (
-                <motion.img
+                <motion.div
                   key={p.slug}
-                  src={p.image}
-                  alt={p.alt}
                   initial={false}
                   animate={{ opacity: active === i ? 1 : 0, scale: active === i ? 1 : 1.07 }}
                   transition={{ duration: 0.8, ease }}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
+                  className="absolute inset-0"
+                >
+                  <Visual project={p} className="h-full w-full" />
+                </motion.div>
               ))}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/80 to-transparent" />
               <p className="absolute bottom-5 left-6 font-display text-3xl italic tabular-nums">

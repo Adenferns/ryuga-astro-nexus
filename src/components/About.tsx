@@ -6,9 +6,9 @@ const About = () => (
       <Reveal>
         <Eyebrow index="i" label="Mission" />
         <p className="max-w-5xl font-display text-4xl font-normal leading-[1.08] tracking-[-0.02em] md:text-7xl">
-          A student-led team turning hands-on experience into real aerospace systems.{" "}
+          A student-led team turning hands-on experience into real systems, from airframe to API.{" "}
           <span className="text-muted-foreground">
-            Drones, robotics, AI and space tech — built by students who now ship inside industry.
+            Drones, robotics, AI and software — built by students who now ship inside industry.
           </span>
         </p>
       </Reveal>
@@ -18,9 +18,9 @@ const About = () => (
           <div className="glass h-full rounded-3xl p-8 md:p-10">
             <h3 className="label mb-6 text-primary">Our mission</h3>
             <p className="text-lg leading-relaxed">
-              To empower students with hands-on experience in cutting-edge aerospace technologies,
-              fostering innovation and technical excellence in drone systems, robotics, and space
-              exploration.
+              To empower students with hands-on experience in cutting-edge aerospace and software
+              technologies, fostering innovation and technical excellence in drone systems, robotics,
+              and the platforms and AI behind them.
             </p>
           </div>
         </Reveal>

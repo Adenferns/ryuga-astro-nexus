@@ -11,6 +11,11 @@ const tech = [
   "PID control",
   "IMU",
   "Telemetry",
+  "FastAPI",
+  "React",
+  "Kubernetes",
+  "ClickHouse",
+  "Next.js",
 ];
 
 const Row = ({ hidden }: { hidden?: boolean }) => (

@@ -4,6 +4,8 @@ import { Reveal, SectionHead } from "@/components/Reveal";
 import { Button } from "@/components/ui/button";
 import { projects } from "@/data/projects";
 
+const shown = projects.slice(0, 8);
+
 // A flight-manifest style index rather than a card grid.
 const Projects = () => (
   <section id="projects" className="scroll-mt-24 py-28 md:py-44">
@@ -19,7 +21,7 @@ const Projects = () => (
       />
 
       <ol className="border-t border-white/10">
-        {projects.map((p, i) => (
+        {shown.map((p, i) => (
           <li key={p.slug}>
             <Reveal>
               <Link
@@ -30,7 +32,7 @@ const Projects = () => (
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div>
-                  <p className="label mb-3">{p.category}</p>
+                  <p className="label mb-3">{p.domain} · {p.category}{p.by ? ` · ${p.by}` : ""}</p>
                   <h3 className="font-display text-4xl leading-[1.04] tracking-[-0.02em] md:text-5xl">
                     {p.title}
                   </h3>
@@ -51,7 +53,7 @@ const Projects = () => (
 
       <Button asChild variant="outline" className="glass mt-10 h-11 border-white/15 bg-transparent px-6 hover:bg-white/5">
         <Link to="/work">
-          See every project in detail <ArrowUpRight />
+          All {projects.length} projects in detail <ArrowUpRight />
         </Link>
       </Button>
     </div>

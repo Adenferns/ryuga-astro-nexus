@@ -5,19 +5,20 @@ import { Link } from "react-router-dom";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/drone4.jpg";
+import { projects, techCount } from "@/data/projects";
 
 const lines: ReactNode[] = [
-  "We build drones",
+  "Drones, robotics",
   <>
-    that <em className="text-primary">think.</em>
+    and software <em className="text-primary">that ship.</em>
   </>,
 ];
 
-const Stat = ({ value, label }: { value: number; label: string }) => {
+const Stat = ({ value, label, className = "" }: { value: number; label: string; className?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true });
   return (
-    <div ref={ref} className="px-5 py-6 md:px-10 md:py-8">
+    <div ref={ref} className={`px-5 py-6 md:px-10 md:py-8 ${className}`}>
       <NumberFlow
         value={inView ? value : 0}
         className="font-display text-5xl tabular-nums leading-none md:text-7xl"
@@ -70,8 +71,8 @@ const Hero = () => (
 
       <div className="mt-10 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
         <p className="max-w-md text-lg leading-relaxed text-muted-foreground">
-          A student-led team building autonomous drones, robotics and AI — now with engineers
-          shipping inside industry.
+          A student-led team building autonomous drones, robots and the software behind them — now
+          with engineers shipping inside industry.
         </p>
         <div className="flex flex-wrap gap-3">
           <Button asChild size="lg" className="h-12 px-7">
@@ -90,9 +91,11 @@ const Hero = () => (
         </div>
       </div>
 
-      <div className="glass mt-14 grid grid-cols-3 divide-x divide-white/10 rounded-3xl">
-        <Stat value={6} label="Projects built" />
-        <Stat value={4} label="Engineers in industry" />
+      {/* Every figure here is counted from the data, so it stays true as projects are added. */}
+      <div className="glass mt-14 grid grid-cols-2 rounded-3xl md:grid-cols-4">
+        <Stat value={projects.length} label="Projects shipped" className="border-b border-r border-white/10 md:border-b-0" />
+        <Stat value={techCount} label="Tools & techniques" className="border-b border-white/10 md:border-b-0 md:border-r" />
+        <Stat value={4} label="Engineers in industry" className="border-r border-white/10" />
         <Stat value={3} label="Companies" />
       </div>
     </div>
