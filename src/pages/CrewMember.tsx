@@ -6,6 +6,7 @@ import { person } from "@/data/people";
 // register it here, and set `portfolio: true` for that person in src/data/people.ts.
 const portfolios: Record<string, ComponentType> = {
   yash: lazy(() => import("@/portfolios/yash/Portfolio")),
+  alister: lazy(() => import("@/portfolios/alister/Portfolio")),
 };
 
 const Loading = () => (

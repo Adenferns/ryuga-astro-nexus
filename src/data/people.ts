@@ -74,7 +74,7 @@ export const people: Person[] = [
     // GitHub omitted: the old link pointed at a non-existent account. Add Alister's here.
     linkedin: "https://www.linkedin.com/in/alister-fernandes-4a7239317",
     email: "alisterbhp@gmail.com",
-    portfolio: false,
+    portfolio: true,
   },
 ];
 
