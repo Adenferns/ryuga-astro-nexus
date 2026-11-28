@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform, type MotionValue } from "motion/react";
 import { Eyebrow, Reveal } from "@/components/Reveal";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // Every item below comes from the profile text — nothing added.
 const layers = [
@@ -93,8 +94,8 @@ const Art = ({ kind }: { kind: Key }) => (
   </svg>
 );
 
-const Plate = ({ i, active, explode, kind, label }: { i: number; active: number; explode: MotionValue<number>; kind: Key; label: string }) => {
-  const z = useTransform(explode, [0, 1], [i * 6, i * 92]);
+const Plate = ({ i, gap, active, explode, kind, label }: { i: number; gap: number; active: number; explode: MotionValue<number>; kind: Key; label: string }) => {
+  const z = useTransform(explode, [0, 1], [i * 6, i * gap]);
   const lit = active === i;
   return (
     <motion.div style={{ z, transformStyle: "preserve-3d" }} className="absolute inset-0">
@@ -116,6 +117,8 @@ const Plate = ({ i, active, explode, kind, label }: { i: number; active: number;
 
 export const Stack = () => {
   const reduce = useReducedMotion();
+  // Tighter layer spacing on phones so the top plate stays clear of the nav.
+  const gap = useIsMobile() ? 56 : 92;
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
   const [active, setActive] = useState(0);
@@ -166,7 +169,7 @@ export const Stack = () => {
             </div>
           </div>
 
-          <div className="order-1 lg:order-2">
+          <div className="order-1 max-lg:translate-y-6 lg:order-2">
             <div className="relative mx-auto aspect-square w-[min(54vw,30rem)] [perspective:1500px] sm:w-[min(62vw,30rem)] lg:w-[min(36vw,32rem)]">
               <motion.div
                 aria-hidden
@@ -174,7 +177,7 @@ export const Stack = () => {
                 className="absolute inset-[16%]"
               >
                 {layers.map((l, i) => (
-                  <Plate key={l.key} i={i} active={active} explode={explode} kind={l.key} label={l.name} />
+                  <Plate key={l.key} i={i} gap={gap} active={active} explode={explode} kind={l.key} label={l.name} />
                 ))}
               </motion.div>
             </div>

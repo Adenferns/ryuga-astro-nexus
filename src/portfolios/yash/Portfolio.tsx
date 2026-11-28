@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useSpring } from "motion/react";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Menu } from "lucide-react";
+import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { LiquidFilter } from "./kit";
 import { Backdrop } from "./Backdrop";
@@ -69,6 +70,29 @@ const PortfolioNav = () => (
       <Button asChild size="sm" className="ml-1 h-10 px-5">
         <a href="#contact">Contact</a>
       </Button>
+      {/* The inline links only fit from md up; phones get the same sections in a sheet. */}
+      <Sheet>
+        <SheetTrigger
+          aria-label="Open sections"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full transition-transform duration-150 active:scale-[0.95] md:hidden"
+        >
+          <Menu className="h-5 w-5" />
+        </SheetTrigger>
+        <SheetContent aria-describedby={undefined} className="glass w-[88vw] max-w-sm border-l border-white/10 bg-background/70 p-8 pt-20">
+          <SheetTitle className="sr-only">Sections</SheetTitle>
+          <ul className="space-y-1">
+            {[{ href: "#top", label: "Intro" }, ...links, { href: "#contact", label: "Contact" }].map((l) => (
+              <li key={l.href}>
+                <SheetClose asChild>
+                  <a href={l.href} className="block py-2 font-display text-4xl leading-tight">
+                    {l.label}
+                  </a>
+                </SheetClose>
+              </li>
+            ))}
+          </ul>
+        </SheetContent>
+      </Sheet>
     </nav>
   </header>
 );

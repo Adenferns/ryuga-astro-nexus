@@ -2,6 +2,7 @@ import { useRef, type ReactNode } from "react";
 import { motion, useInView, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/hooks/use-mobile";
 import portrait from "@/assets/portfolio/yash-portrait.jpg";
 import { Lens, Magnetic } from "./kit";
 
@@ -101,6 +102,8 @@ const Portrait = () => {
 };
 
 export const Hero = () => {
+  // On phones the hero is taller than the screen, so fading it on scroll would hide its own buttons.
+  const mobile = useIsMobile();
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const textY = useTransform(scrollYProgress, [0, 1], [0, -90]);
@@ -110,7 +113,7 @@ export const Hero = () => {
   return (
     <section ref={ref} id="top" className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28 lg:pt-24">
       <div className="container grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
-        <motion.div style={{ y: textY, opacity: textOpacity }} className="order-2 mt-6 lg:order-1 lg:col-span-7 lg:mt-0">
+        <motion.div style={mobile ? undefined : { y: textY, opacity: textOpacity }} className="order-2 mt-6 lg:order-1 lg:col-span-7 lg:mt-0">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -171,7 +174,7 @@ export const Hero = () => {
           </motion.div>
         </motion.div>
 
-        <motion.div style={{ y: portraitY }} className="order-1 lg:order-2 lg:col-span-5">
+        <motion.div style={mobile ? undefined : { y: portraitY }} className="order-1 lg:order-2 lg:col-span-5">
           <Portrait />
         </motion.div>
       </div>
