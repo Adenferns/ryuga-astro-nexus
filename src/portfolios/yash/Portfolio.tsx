@@ -4,6 +4,7 @@ import { motion, useScroll, useSpring } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LiquidFilter } from "./kit";
+import { Backdrop } from "./Backdrop";
 import { Hero } from "./Hero";
 import { Stack } from "./Stack";
 import { Systems } from "./Systems";
@@ -87,9 +88,10 @@ const Portfolio = () => {
     <>
       <LiquidFilter />
       <motion.div aria-hidden style={{ scaleX }} className="fixed inset-x-0 top-0 z-[60] h-0.5 origin-left bg-primary" />
+      <Backdrop />
       <PortfolioNav />
       <Rail />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <Stack />
         <Systems />

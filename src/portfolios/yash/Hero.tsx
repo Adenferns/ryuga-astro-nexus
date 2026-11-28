@@ -73,8 +73,8 @@ const Portrait = () => {
             <img
               src={portrait}
               alt="Portrait of Yash Shaw"
-              width={1100}
-              height={1467}
+              width={960}
+              height={1280}
               decoding="async"
               className="h-full w-full object-cover object-[50%_18%]"
             />
