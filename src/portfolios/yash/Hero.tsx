@@ -85,7 +85,7 @@ const Portrait = () => {
         </div>
 
         <Float className="-bottom-6 left-2 sm:-left-12 sm:bottom-20" delay={0} paused={!onScreen}>
-          <p className="label">Building now</p>
+          <p className="label">Featured build</p>
           <p className="mt-1 font-display text-xl leading-tight">AEROVISION</p>
           <p className="text-xs text-muted-foreground">Visual-inertial odometry</p>
         </Float>

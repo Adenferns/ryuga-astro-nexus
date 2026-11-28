@@ -21,7 +21,7 @@ const systems: Sys[] = [
     slug: "aerovision",
     kicker: "Drone navigation",
     title: "AEROVISION",
-    status: "Ongoing",
+    status: "Completed",
     body: "Visual positioning and navigation from camera and inertial data — aimed at places where GPS is unavailable or unreliable.",
     points: [
       "Raspberry Pi 5 with Camera Module 3 (IMX708)",
@@ -36,7 +36,7 @@ const systems: Sys[] = [
     slug: "home-auto",
     kicker: "Smart home",
     title: "Home Auto",
-    status: "Offline-first",
+    status: "Completed",
     body: "Home automation built around local control — reliable, and independent of cloud services or internet access.",
     points: [
       "ESP32-S3 running ESPHome and ESP-IDF",
@@ -50,8 +50,8 @@ const systems: Sys[] = [
   {
     slug: "surveillance",
     kicker: "Computer vision",
-    title: "Multi-camera surveillance",
-    status: "In development",
+    title: "ICCS System",
+    status: "Completed",
     body: "AI-based surveillance infrastructure for processing many camera streams at once, while keeping video processing and detection efficient.",
     points: [
       "RTSP video streaming",
@@ -66,6 +66,7 @@ const systems: Sys[] = [
     slug: "pcb",
     kicker: "Hardware",
     title: "Electronics & PCB",
+    status: "Completed",
     body: "Hands-on circuit and board design, from schematic through to a working prototype.",
     points: [
       "KiCad schematic and PCB design",
@@ -80,6 +81,7 @@ const systems: Sys[] = [
     slug: "integration",
     kicker: "Systems",
     title: "Hardware integration",
+    status: "Completed",
     body: "Working with complete hardware systems rather than isolated parts.",
     points: [
       "Raspberry Pi-based systems",
@@ -136,7 +138,7 @@ export const Systems = () => {
         <Reveal className="mb-12 md:mb-20">
           <Eyebrow index="ii" label="Selected systems" />
           <h2 className="max-w-4xl font-display text-5xl leading-[1.02] tracking-[-0.02em] md:text-7xl">
-            Things I’ve built, <em className="text-muted-foreground">and am building.</em>
+            Things I’ve built, <em className="text-muted-foreground">start to finish.</em>
           </h2>
         </Reveal>
 
