@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import photo from "@/assets/portfolio/alister-portrait.jpg";
 import { Magnetic } from "../yash/kit";
-import { useSfTime } from "./clock";
+import { useClocks } from "./clock";
 
 const ease = [0.23, 1, 0.32, 1] as const;
 
@@ -29,7 +29,7 @@ const Letters = ({ text, delay, className = "" }: { text: string; delay: number;
 
 const Portrait = () => {
   const reduce = useReducedMotion();
-  const time = useSfTime();
+  const { india, sf } = useClocks();
   const ry = useSpring(useMotionValue(0), { stiffness: 90, damping: 16 });
   const rx = useSpring(useMotionValue(0), { stiffness: 90, damping: 16 });
   return (
@@ -86,9 +86,17 @@ const Portrait = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.2 }}
         >
-          <p className="label">San Francisco</p>
-          <p className="mt-1 font-display text-3xl leading-none tabular-nums">{time}</p>
-          <p className="mt-1 text-xs text-muted-foreground">Delga.ai · local time</p>
+          <p className="label">Local time</p>
+          <div className="mt-2 flex gap-6">
+            <div>
+              <p className="font-display text-3xl leading-none tabular-nums">{india}</p>
+              <p className="mt-1 text-xs text-muted-foreground">India</p>
+            </div>
+            <div>
+              <p className="font-display text-3xl leading-none tabular-nums">{sf}</p>
+              <p className="mt-1 text-xs text-muted-foreground">San Francisco</p>
+            </div>
+          </div>
         </motion.div>
         <motion.div
           className="glass absolute -right-2 top-8 z-20 hidden rounded-2xl px-4 py-3 sm:block sm:-right-12"
@@ -141,7 +149,7 @@ export const Hero = () => {
             transition={{ duration: 0.9, ease, delay: 1 }}
             className="mt-8 max-w-md text-lg leading-relaxed text-muted-foreground"
           >
-            PCB design and embedded systems development — from the board on the bench to a startup in San Francisco.
+            PCB design and embedded systems development — working from India with a Y Combinator-backed startup in San Francisco.
           </motion.p>
 
           <motion.ul
@@ -150,7 +158,7 @@ export const Hero = () => {
             transition={{ duration: 0.9, ease, delay: 1.1 }}
             className="mt-6 flex flex-wrap gap-2"
           >
-            {["Robotics Lead · Ryuga Aerospace", "Delga.ai · San Francisco", "Y Combinator-backed"].map((t) => (
+            {["Robotics Lead · Ryuga Aerospace", "Delga.ai · San Francisco", "Based in India"].map((t) => (
               <li key={t} className="glass rounded-full px-4 py-1.5 text-sm">
                 {t}
               </li>

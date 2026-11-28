@@ -2,14 +2,14 @@ import { ArrowUpRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow, Reveal } from "@/components/Reveal";
 import { person } from "@/data/people";
-import { useSfTime } from "./clock";
+import { useClocks } from "./clock";
 
 const a = person("alister")!;
 const contacts = [
   { label: a.email, href: `mailto:${a.email}`, hint: "Email" },
   { label: "LinkedIn", href: a.linkedin, hint: "Profile" },
 ];
-const ticker = ["PCB design", "Embedded systems", "Robotics", "Delga.ai", "Y Combinator-backed", "San Francisco"];
+const ticker = ["PCB design", "Embedded systems", "Robotics", "Delga.ai", "Y Combinator-backed", "India ↔ San Francisco"];
 
 export const Ticker = () => (
   <div aria-hidden className="overflow-hidden border-y border-white/10 py-5">
@@ -29,14 +29,14 @@ export const Ticker = () => (
 );
 
 export const Now = () => {
-  const time = useSfTime();
+  const { india, sf } = useClocks();
   return (
     <section id="now" className="py-28 md:py-40">
       <div className="container">
         <Reveal className="mb-12 md:mb-16">
           <Eyebrow index="ii" label="Now" />
           <h2 className="max-w-4xl font-display text-5xl leading-[1.02] tracking-[-0.02em] md:text-7xl">
-            Working from <em className="text-primary">San Francisco.</em>
+            Working from India, <em className="text-primary">for San Francisco.</em>
           </h2>
         </Reveal>
         <Reveal>
@@ -45,14 +45,21 @@ export const Now = () => {
               <p className="label">Company</p>
               <p className="mt-3 font-display text-6xl leading-none tracking-[-0.02em] md:text-8xl">Delga.ai</p>
               <p className="mt-5 flex flex-wrap items-center gap-3 text-muted-foreground">
-                San Francisco
+                Based in San Francisco
                 <span className="rounded-full border border-primary/40 px-3 py-0.5 text-xs text-primary">Y Combinator-backed</span>
               </p>
             </div>
-            <div className="md:text-right">
-              <p className="label">Local time</p>
-              <p className="mt-2 font-display text-6xl tabular-nums leading-none md:text-7xl">{time}</p>
-              <p className="mt-2 text-xs text-muted-foreground">Pacific Time</p>
+            <div className="flex gap-10 md:text-right">
+              <div>
+                <p className="label">India</p>
+                <p className="mt-2 font-display text-5xl tabular-nums leading-none md:text-6xl">{india}</p>
+                <p className="mt-2 text-xs text-muted-foreground">Where Alister works</p>
+              </div>
+              <div>
+                <p className="label">San Francisco</p>
+                <p className="mt-2 font-display text-5xl tabular-nums leading-none md:text-6xl">{sf}</p>
+                <p className="mt-2 text-xs text-muted-foreground">Delga.ai HQ</p>
+              </div>
             </div>
           </div>
         </Reveal>

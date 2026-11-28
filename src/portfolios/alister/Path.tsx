@@ -7,7 +7,7 @@ const steps = [
   { n: "01", kicker: "The craft", title: "PCB design", line: "Designing the printed circuit boards that everything else sits on." },
   { n: "02", kicker: "The craft", title: "Embedded systems", line: "Developing the embedded systems that run on those boards." },
   { n: "03", kicker: "The team", title: "Robotics Lead", line: "Leading robotics at Ryuga Aerospace, a student-led aerospace, robotics and software team." },
-  { n: "04", kicker: "The company", title: "Delga.ai, San Francisco", line: "Working at a Y Combinator-backed startup in San Francisco." },
+  { n: "04", kicker: "The company · San Francisco", title: "Delga.ai", line: "Working from India with Delga.ai, a Y Combinator-backed startup based in San Francisco." },
 ] as const;
 
 const Step = ({ s }: { s: (typeof steps)[number] }) => {
