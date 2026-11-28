@@ -18,6 +18,7 @@ export default {
       fontFamily: {
         sans: ['"Instrument Sans"', "ui-sans-serif", "system-ui", "sans-serif"],
         display: ['"Instrument Serif"', "Georgia", "serif"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "SFMono-Regular", "monospace"],
       },
       colors: {
         border: "hsl(var(--border))",

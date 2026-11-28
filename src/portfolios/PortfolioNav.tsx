@@ -8,7 +8,7 @@ export type NavLink = { href: string; label: string };
 /** Floating pill shared by every crew portfolio. Inline links from md up; a sheet menu on phones. */
 export const PortfolioNav = ({ name, links }: { name: string; links: NavLink[] }) => (
   <header className="fixed inset-x-0 top-4 z-50 flex justify-center px-4">
-    <nav aria-label="Portfolio" className="glass flex h-[3.25rem] items-center gap-1 rounded-full py-1.5 pl-2 pr-1.5">
+    <nav aria-label="Portfolio" className="glass flex h-[3.25rem] items-center gap-1 rounded-full !bg-background/80 py-1.5 pl-2 pr-1.5">
       <Link
         to="/crew"
         aria-label="Back to the crew"

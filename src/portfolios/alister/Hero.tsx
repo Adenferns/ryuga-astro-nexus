@@ -1,195 +1,84 @@
-import { useRef } from "react";
-import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
-import { ArrowDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useEffect, useState } from "react";
+import NumberFlow from "@number-flow/react";
+import { motion } from "motion/react";
 import photo from "@/assets/portfolio/alister-portrait.jpg";
-import { Magnetic } from "../yash/kit";
 import { useClocks } from "./clock";
 
 const ease = [0.23, 1, 0.32, 1] as const;
 
-/** Each letter rises out of its own clipped slot, one after another. */
-const Letters = ({ text, delay, className = "" }: { text: string; delay: number; className?: string }) => (
-  <span className={`block overflow-hidden pb-[0.14em] ${className}`} aria-label={text}>
-    {[...text].map((c, i) => (
-      <motion.span
-        key={i}
-        aria-hidden
-        className="inline-block"
-        initial={{ y: "110%" }}
-        animate={{ y: "0%" }}
-        transition={{ duration: 0.9, ease, delay: delay + i * 0.045 }}
-      >
-        {c}
-      </motion.span>
-    ))}
-  </span>
-);
-
-const Portrait = () => {
-  const reduce = useReducedMotion();
-  const { india, sf } = useClocks();
-  const ry = useSpring(useMotionValue(0), { stiffness: 90, damping: 16 });
-  const rx = useSpring(useMotionValue(0), { stiffness: 90, damping: 16 });
+/** HH:MM with rolling digits. Starts at 00:00 so the first paint rolls into the real time. */
+const Time = ({ t }: { t: string }) => {
+  const [on, setOn] = useState(false);
+  useEffect(() => setOn(true), []);
+  const [h, m] = on ? t.split(":").map(Number) : [0, 0];
+  const f = { minimumIntegerDigits: 2 };
   return (
-    <div
-      className="relative mx-auto w-[min(66vw,25rem)] sm:w-[min(72vw,25rem)] [perspective:1200px]"
-      onPointerMove={(e) => {
-        if (reduce || e.pointerType !== "mouse") return;
-        const r = e.currentTarget.getBoundingClientRect();
-        ry.set(((e.clientX - r.left) / r.width - 0.5) * 8);
-        rx.set(-((e.clientY - r.top) / r.height - 0.5) * 6);
-      }}
-      onPointerLeave={() => {
-        rx.set(0);
-        ry.set(0);
-      }}
-    >
-      {/* Slow dashed ring, like a solder-pad outline, turning behind the frame */}
-      <motion.svg
-        aria-hidden
-        viewBox="0 0 100 100"
-        fill="none"
-        animate={reduce ? undefined : { rotate: 360 }}
-        transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-        className="absolute -inset-[14%] h-[128%] w-[128%] text-primary/50"
-      >
-        <circle cx="50" cy="50" r="49" stroke="currentColor" strokeWidth="0.25" strokeDasharray="0.6 2.4" />
-        <circle cx="50" cy="1" r="1.2" fill="hsl(var(--primary))" />
-      </motion.svg>
-
-      <motion.div
-        style={{ rotateX: rx, rotateY: ry }}
-        initial={{ opacity: 0, y: 40, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 1.1, ease, delay: 0.2 }}
-        className="relative"
-      >
-        <div className="glass rounded-[2.75rem] p-2.5">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-[2.2rem] bg-[#0c111b]">
-            <img
-              src={photo}
-              alt="Portrait of Alister Fernandes"
-              width={900}
-              height={1200}
-              decoding="async"
-              className="h-full w-full object-cover object-[50%_24%]"
-            />
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#090b10]/65 via-[#090b10]/10 to-[#090b10]/30" />
-          </div>
-        </div>
-
-        <motion.div
-          className="glass absolute -bottom-6 left-3 z-20 rounded-2xl px-4 py-3 sm:-left-12 sm:bottom-14"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.2 }}
-        >
-          <p className="label">Local time</p>
-          <div className="mt-2 flex gap-6">
-            <div>
-              <p className="font-display text-3xl leading-none tabular-nums">{india}</p>
-              <p className="mt-1 text-xs text-muted-foreground">India</p>
-            </div>
-            <div>
-              <p className="font-display text-3xl leading-none tabular-nums">{sf}</p>
-              <p className="mt-1 text-xs text-muted-foreground">San Francisco</p>
-            </div>
-          </div>
-        </motion.div>
-        <motion.div
-          className="glass absolute -right-2 top-8 z-20 hidden rounded-2xl px-4 py-3 sm:block sm:-right-12"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 1.45 }}
-        >
-          <p className="label">Role</p>
-          <p className="mt-1 font-display text-xl leading-tight">Robotics Lead</p>
-        </motion.div>
-      </motion.div>
-    </div>
+    <p aria-label={t} className="font-display text-[4.4rem] leading-[0.9] tabular-nums tracking-[-0.03em] md:text-[clamp(5rem,12.5vw,13rem)]">
+      <NumberFlow value={h} format={f} />
+      <span className="mx-[0.04em] opacity-50">:</span>
+      <NumberFlow value={m} format={f} />
+    </p>
   );
 };
 
+const Half = ({ light, place, note, t }: { light?: boolean; place: string; note: string; t: string }) => (
+  <div
+    className={`flex flex-col px-6 pt-28 md:px-12 md:pt-32 ${
+      light ? "bg-primary pt-[6.5rem] text-primary-foreground md:items-end md:text-right" : "bg-background text-foreground"
+    }`}
+  >
+    <p className="flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.22em] opacity-70">
+      <span className={`h-1.5 w-1.5 rounded-full ${light ? "bg-primary-foreground" : "bg-primary"}`} />
+      {place}
+    </p>
+    <div className="mt-5">
+      <Time t={t} />
+    </div>
+    <p className="mt-4 hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] opacity-60 md:block">{note}</p>
+  </div>
+);
+
 export const Hero = () => {
-  const mobile = useIsMobile(); // the hero is taller than a phone screen, so it must not fade on scroll
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const portraitY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-
+  const { india, sf } = useClocks();
   return (
-    <section ref={ref} id="top" className="relative flex min-h-[100svh] items-center overflow-hidden pb-20 pt-28 lg:pt-24">
-      <div className="container grid items-center gap-14 lg:grid-cols-12 lg:gap-8">
-        <motion.div style={mobile ? undefined : { y: textY, opacity: textOpacity }} className="order-2 lg:order-1 lg:col-span-7">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="label mb-8 flex items-center gap-4"
-          >
-            <span aria-hidden className="h-px w-10 bg-primary" />
-            Portfolio — Ryuga Aerospace crew
-          </motion.p>
+    <section id="top" className="relative grid min-h-[max(100svh,46rem)] grid-rows-2 overflow-hidden md:grid-cols-2 md:grid-rows-1">
+      <Half place="India" note="IST · where Alister works" t={india} />
+      <Half light place="San Francisco" note="PT · Delga.ai headquarters" t={sf} />
 
-          <h1 className="font-display text-[clamp(4.4rem,14vw,12.5rem)] font-normal leading-[0.88] tracking-[-0.035em]">
-            <Letters text="Alister" delay={0.25} />
-            <Letters
-              text="Fernandes"
-              delay={0.55}
-              className="italic text-transparent [-webkit-text-stroke:1px_hsl(var(--primary))]"
-            />
-          </h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease, delay: 1 }}
-            className="mt-8 max-w-md text-lg leading-relaxed text-muted-foreground"
-          >
-            PCB design and embedded systems development — working from India with a Y Combinator-backed startup in San Francisco.
-          </motion.p>
-
-          <motion.ul
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease, delay: 1.1 }}
-            className="mt-6 flex flex-wrap gap-2"
-          >
-            {["Robotics Lead · Ryuga Aerospace", "Delga.ai · San Francisco", "Based in India"].map((t) => (
-              <li key={t} className="glass rounded-full px-4 py-1.5 text-sm">
-                {t}
-              </li>
-            ))}
-          </motion.ul>
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease, delay: 1.2 }}
-            className="mt-10 flex flex-wrap gap-3"
-          >
-            <Magnetic>
-              <Button asChild size="lg" className="h-12 px-7">
-                <a href="#path">
-                  Follow the path <ArrowDown />
-                </a>
-              </Button>
-            </Magnetic>
-            <Magnetic>
-              <Button asChild size="lg" variant="outline" className="glass h-12 border-white/15 bg-transparent px-7 hover:bg-white/5">
-                <a href="#contact">Get in touch</a>
-              </Button>
-            </Magnetic>
-          </motion.div>
-        </motion.div>
-
-        <motion.div style={mobile ? undefined : { y: portraitY }} className="order-1 lg:order-2 lg:col-span-5">
-          <Portrait />
+      {/* Porthole straddling the seam. The wrapper centres it; the inner element animates, so the two transforms never collide. */}
+      <div className="absolute left-1/2 top-[47%] z-20 w-[min(46vw,13rem)] -translate-x-1/2 -translate-y-1/2 md:top-[44%] md:w-[min(30vw,25rem)]">
+        <motion.div
+          initial={{ clipPath: "circle(0% at 50% 50%)", scale: 0.9 }}
+          animate={{ clipPath: "circle(50% at 50% 50%)", scale: 1 }}
+          transition={{ duration: 1.3, ease, delay: 0.25 }}
+          className="aspect-square w-full"
+        >
+          <img
+            src={photo}
+            alt="Portrait of Alister Fernandes"
+            width={900}
+            height={1200}
+            decoding="async"
+            className="h-full w-full rounded-full object-cover object-[50%_22%] shadow-[0_30px_80px_-20px_rgb(0_0_0/0.7)] ring-[6px] ring-background"
+          />
         </motion.div>
       </div>
+
+      {/* Difference blend: the name reads light on midnight and dark on champagne */}
+      <h1 className="pointer-events-none absolute inset-x-0 bottom-5 z-30 px-6 font-display text-[clamp(3rem,17vw,9rem)] leading-[0.84] tracking-[-0.035em] text-white mix-blend-difference md:bottom-8 md:whitespace-nowrap md:px-12 md:text-[clamp(3rem,12.2vw,11.5rem)]">
+        {["Alister", "Fernandes"].map((w, i) => (
+          <span key={w} className="block overflow-hidden pb-[0.1em] md:inline-block md:pr-[0.22em]">
+            <motion.span
+              className="block"
+              initial={{ y: "105%" }}
+              animate={{ y: "0%" }}
+              transition={{ duration: 1.1, ease, delay: 0.7 + i * 0.12 }}
+            >
+              {w}
+            </motion.span>
+          </span>
+        ))}
+      </h1>
     </section>
   );
 };
